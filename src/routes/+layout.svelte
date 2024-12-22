@@ -1,6 +1,10 @@
 <script>
-  import "tailwindcss/tailwind.css";
+	import 'tailwindcss/tailwind.css';
 </script>
 
-<slot />
-
+<div class="relative flex min-h-dvh flex-col">
+	<main
+		class="flex flex-col h-dvh">
+		<slot />
+	</main>
+</div>
