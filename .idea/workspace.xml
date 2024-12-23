@@ -4,15 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add data folder to gitignore">
+    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add video list view and delete management">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/lib/components/DropZone.svelte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/components/VideoCard.svelte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/api/videos/+server.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/routes/videos/+page.server.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/routes/videos/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/videos/upload/+page.server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/server/db/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server/db/schema.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/+layout.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +30,7 @@
       <list>
         <option value="components/DropZone" />
         <option value="+page" />
+        <option value="VideoCard" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -76,6 +83,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/routes/api/videos" />
+      <recent name="$PROJECT_DIR$/src/routes/videos" />
       <recent name="$PROJECT_DIR$/src/routes/videos/upload" />
     </key>
   </component>
@@ -111,7 +120,7 @@
       <workItem from="1734800882785" duration="45000" />
       <workItem from="1734800931331" duration="152000" />
       <workItem from="1734801088430" duration="64000" />
-      <workItem from="1734801172954" duration="24924000" />
+      <workItem from="1734801172954" duration="71273000" />
     </task>
     <task id="LOCAL-00001" summary="Add files to gitignore">
       <option name="closed" value="true" />
@@ -145,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734851328113</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add upload page base logic">
+      <option name="closed" value="true" />
+      <created>1734872134980</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1734872134980</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +173,8 @@
     <MESSAGE value="Add video and video format to db schema" />
     <MESSAGE value="Edit username validation" />
     <MESSAGE value="Add data folder to gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add data folder to gitignore" />
+    <MESSAGE value="Add upload page base logic" />
+    <MESSAGE value="Add video list view and delete management" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add video list view and delete management" />
   </component>
 </project>

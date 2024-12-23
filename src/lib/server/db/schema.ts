@@ -23,6 +23,7 @@ export const video = sqliteTable('video', {
 		.references(() => user.id),
 	title: text('title').notNull(),
 	description: text('description'),
+	thumbnail: text('thumbnail'),
 	sourceFilePath: text('source_file_path'),
 
 	// Statut de la vidéo (ex: "pending", "transcoding", "ready", "error", etc.)
@@ -30,10 +31,10 @@ export const video = sqliteTable('video', {
 
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
-		.default(sql`(CURRENT_TIMESTAMP)`),
+		.default(sql`(unixepoch())`),
 	updatedAt: integer('updated_at', { mode: 'timestamp' })
 		.notNull()
-		.default(sql`(CURRENT_TIMESTAMP)`)
+		.default(sql`(unixepoch())`)
 });
 
 export const videoFormat = sqliteTable('video_format', {

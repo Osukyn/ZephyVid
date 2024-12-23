@@ -92,7 +92,7 @@
 	}
 </script>
 
-<div class="flex justify-evenly items-center h-dvh">
+<div class="flex justify-evenly items-center h-full">
 	<div class="card bg-base-300 w-[36rem] shadow-xl">
 		<div class="card-body">
 			<h2 class="card-title">Mettre en ligne une vidéo</h2>

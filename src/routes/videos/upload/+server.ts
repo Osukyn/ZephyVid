@@ -9,7 +9,7 @@ import { randomUUID } from 'crypto';
 // import { db } from '$lib/server/db'; // si tu veux faire un insert en base
 // import { video } from '$lib/server/db/schema'; // exemple Drizzle
 
-export const POST: RequestHandler = async (event) => {
+export const POST: RequestHandler = async (event: never) => {
 	// 1) Vérifier l’auth
 	if (!event.locals.user) {
 		// Si pas logué, on peut faire un fail(401) ou un redirect

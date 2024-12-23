@@ -11,7 +11,14 @@ export default {
 	plugins: [daisyui],
 	daisyui: {
 		themes: [
-			"forest"
+			{
+				'forest': {
+					...require("daisyui/src/theming/themes")["forest"],
+					'--rounded-box': require("daisyui/src/theming/themes")["night"]["--rounded-box"],
+					'--rounded-btn': require("daisyui/src/theming/themes")["night"]["--rounded-btn"],
+					'--rounded-badge': require("daisyui/src/theming/themes")["night"]["--rounded-badge"]
+				}
+			}
 		]
 	},
 } satisfies Config;
