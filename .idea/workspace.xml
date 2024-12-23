@@ -4,21 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add video list view and delete management">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/DropZone.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/VideoCard.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/videos/+server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/videos/+page.server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/videos/+page.svelte" afterDir="false" />
+    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add logout to navbar and new login page">
+      <change afterPath="$PROJECT_DIR$/src/routes/+layout.server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/api/logout/+server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/login/+page.server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/login/+page.svelte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/password/reset/+page.svelte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/register/+page.server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/register/+page.svelte" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/server/db/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server/db/schema.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/+layout.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/login/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/demo/lucia/login/+page.server.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +28,7 @@
         <option value="+page" />
         <option value="VideoCard" />
         <option value="TypeScript File" />
+        <option value="password/reset+page" />
       </list>
     </option>
   </component>
@@ -63,7 +60,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/osukyn/WebstormProjects/ZephyVid",
+    "last_opened_file_path": "/Users/osukyn/WebstormProjects/ZephyVid/src/routes",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -82,7 +79,11 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/routes" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/routes/password/reset" />
       <recent name="$PROJECT_DIR$/src/routes/api/videos" />
       <recent name="$PROJECT_DIR$/src/routes/videos" />
       <recent name="$PROJECT_DIR$/src/routes/videos/upload" />
@@ -120,7 +121,7 @@
       <workItem from="1734800882785" duration="45000" />
       <workItem from="1734800931331" duration="152000" />
       <workItem from="1734801088430" duration="64000" />
-      <workItem from="1734801172954" duration="71273000" />
+      <workItem from="1734801172954" duration="82960000" />
     </task>
     <task id="LOCAL-00001" summary="Add files to gitignore">
       <option name="closed" value="true" />
@@ -162,7 +163,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734872134980</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add video list view and delete management">
+      <option name="closed" value="true" />
+      <created>1734977246446</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1734977246446</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,6 +184,7 @@
     <MESSAGE value="Add data folder to gitignore" />
     <MESSAGE value="Add upload page base logic" />
     <MESSAGE value="Add video list view and delete management" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add video list view and delete management" />
+    <MESSAGE value="Add logout to navbar and new login page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add logout to navbar and new login page" />
   </component>
 </project>

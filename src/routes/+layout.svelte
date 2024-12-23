@@ -1,15 +1,20 @@
-<script>
+<script lang="ts">
 	import 'tailwindcss/tailwind.css';
+	import { enhance } from '$app/forms';
+	export let data;
+
+	$: data.user = data.user || null;
 </script>
 
 <div class="relative flex min-h-dvh flex-col overflow-hidden">
+	{#if data.user}
 	<header>
 		<div class="navbar border-b-[1px] border-stone-900 px-12 shadow-2xl">
 			<div class="flex-1">
 				<a class="btn btn-ghost text-xl !px-0" href="/videos">ZephyVid</a>
 			</div>
 			<div class="flex-none gap-2">
-				<a class="btn btn-ghost btn-square" href="/videos/upload">
+				<a class="btn btn-ghost btn-square" href="/videos/upload" aria-label="upload video button">
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 							 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
 							 class="lucide lucide-upload">
@@ -19,12 +24,10 @@
 					</svg>
 				</a>
 				<div class="dropdown dropdown-end">
-					<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-						<div class="w-10 rounded-full">
-							<img
-								alt="Tailwind CSS Navbar component"
-								src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-						</div>
+					<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
+							<div class="bg-neutral text-neutral-content w-10 rounded-full">
+								<span class="text-3xl">{data.user.username[0].toUpperCase()}</span>
+							</div>
 					</div>
 					<ul
 						tabindex="0"
@@ -32,16 +35,20 @@
 						<li>
 							<a class="justify-between">
 								Profile
-								<span class="badge">New</span>
 							</a>
 						</li>
-						<li><a>Settings</a></li>
-						<li><a>Logout</a></li>
+						<li><a>Paramètres</a></li>
+						<li>
+							<form action="/api/logout" method="post">
+								<button type="submit">Déconnexion</button>
+							</form>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</header>
+	{/if}
 	<main
 		class="flex flex-col px-12 py-4 h-[calc(100dvh-4.2rem)]">
 		<slot />

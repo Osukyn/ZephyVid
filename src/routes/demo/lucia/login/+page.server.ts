@@ -21,17 +21,17 @@ export const actions: Actions = {
 		const password = formData.get('password');
 
 		if (!validateUsername(username)) {
-			return fail(400, { message: 'Invalid username' });
+			return fail(400, { message: `Nom d'utilisateur invalide` });
 		}
 		if (!validatePassword(password)) {
-			return fail(400, { message: 'Invalid password' });
+			return fail(400, { message: 'Mot de passe invalide' });
 		}
 
 		const results = await db.select().from(table.user).where(eq(table.user.username, username));
 
 		const existingUser = results.at(0);
 		if (!existingUser) {
-			return fail(400, { message: 'Incorrect username or password' });
+			return fail(400, { message: `Nom d'utilisateur ou mot de passe incorrect` });
 		}
 
 		const validPassword = await verify(existingUser.passwordHash, password, {
@@ -41,7 +41,7 @@ export const actions: Actions = {
 			parallelism: 1
 		});
 		if (!validPassword) {
-			return fail(400, { message: 'Incorrect username or password' });
+			return fail(400, { message: `Nom d'utilisateur ou mot de passe incorrect` });
 		}
 
 		const sessionToken = auth.generateSessionToken();
