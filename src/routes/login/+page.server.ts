@@ -7,30 +7,6 @@ import { fail, redirect } from '@sveltejs/kit';
  import * as auth from '$lib/server/auth';
  import { encodeBase32LowerCase } from '@oslojs/encoding';
 
-/*export const actions: Actions = {
-	login: async ({ request, locals }) => {
-		const body = Object.fromEntries(await request.formData());
-
-		const { data, error: err } = await locals.supabase.auth.signInWithPassword( {
-			email: body.email as string,
-			password: body.password as string,
-		});
-
-		if (err) {
-			if (err instanceof AuthApiError && err.status === 400) {
-				return fail(400, {
-					error: 'Invalid credentials'
-				});
-			}
-			return fail(500, {
-				error: 'An unexpected error occurred'
-			});
-		}
-
-		throw redirect(303, '/');
-	}
-};*/
-
  export const load = async (event) => {
 	 if (event.locals.user) {
 		 return redirect(302, '/demo/lucia');
@@ -72,7 +48,7 @@ import { fail, redirect } from '@sveltejs/kit';
 		 const session = await auth.createSession(sessionToken, existingUser.id);
 		 auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
 
-		 return redirect(302, '/demo/lucia');
+		 return redirect(302, '/videos');
 	 },
 	 register: async (event) => {
 		 const formData = await event.request.formData();
@@ -105,7 +81,7 @@ import { fail, redirect } from '@sveltejs/kit';
 			 console.error(e);
 			 return fail(500, { message: 'An error has occurred' });
 		 }
-		 return redirect(302, '/demo/lucia');
+		 return redirect(302, '/videos');
 	 }
  };
 

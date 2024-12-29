@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, real } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
 
 export const user = sqliteTable('user', {
@@ -37,26 +37,8 @@ export const video = sqliteTable('video', {
 		.default(sql`(unixepoch())`)
 });
 
-export const videoFormat = sqliteTable('video_format', {
-	id: text('id').primaryKey(),  // identifiant unique
-	videoId: text('video_id')
-		.notNull()
-		.references(() => video.id),
-
-	resolution: text('resolution').notNull(),
-	filePath: text('file_path').notNull(),
-	bitrate: real('bitrate'),
-
-	createdAt: integer('created_at', { mode: 'timestamp' })
-		.notNull()
-		.default(sql`(CURRENT_TIMESTAMP)`)
-});
-
 export type Video = typeof video.$inferSelect;
 export type NewVideo = typeof video.$inferInsert;
-
-export type VideoFormat = typeof videoFormat.$inferSelect;
-export type NewVideoFormat = typeof videoFormat.$inferInsert;
 
 export type Session = typeof session.$inferSelect;
 

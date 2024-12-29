@@ -1,6 +1,10 @@
 import type { Config } from 'tailwindcss';
 import daisyui from 'daisyui';
 
+import vidstack from 'vidstack/tailwind.cjs';
+
+import daisyui0 from 'daisyui/src/theming/themes';
+
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
@@ -8,17 +12,23 @@ export default {
 		extend: {}
 	},
 
-	plugins: [daisyui],
+	plugins: [
+		daisyui,
+		vidstack({
+			prefix: 'media',
+			webComponents: true
+		})
+	],
 	daisyui: {
 		themes: [
 			{
-				'forest': {
-					...require("daisyui/src/theming/themes")["forest"],
-					'--rounded-box': require("daisyui/src/theming/themes")["night"]["--rounded-box"],
-					'--rounded-btn': require("daisyui/src/theming/themes")["night"]["--rounded-btn"],
-					'--rounded-badge': require("daisyui/src/theming/themes")["night"]["--rounded-badge"]
+				forest: {
+					...daisyui0['forest'],
+					'--rounded-box': daisyui0['night']['--rounded-box'],
+					'--rounded-btn': daisyui0['night']['--rounded-btn'],
+					'--rounded-badge': daisyui0['night']['--rounded-badge']
 				}
 			}
 		]
-	},
+	}
 } satisfies Config;

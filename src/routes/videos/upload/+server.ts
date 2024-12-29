@@ -1,15 +1,17 @@
 import { fail } from '@sveltejs/kit';
-import type { RequestHandler } from '../../../../.svelte-kit/types/src/routes';
 
 import fs from 'fs/promises';
 import path from 'path';
 import { db } from '$lib/server/db';
 import { video } from '$lib/server/db/schema';
 import { randomUUID } from 'crypto';
-// import { db } from '$lib/server/db'; // si tu veux faire un insert en base
-// import { video } from '$lib/server/db/schema'; // exemple Drizzle
+import IORedis from 'ioredis';
+import { Queue } from 'bullmq';
 
-export const POST: RequestHandler = async (event: never) => {
+const redis = new IORedis();
+const transcodeQueue = new Queue('transcode', { connection: redis });
+
+export const POST = async (event: never) => {
 	// 1) Vérifier l’auth
 	if (!event.locals.user) {
 		// Si pas logué, on peut faire un fail(401) ou un redirect
@@ -59,24 +61,31 @@ export const POST: RequestHandler = async (event: never) => {
 			status: 'pending' // ou "uploaded"
 			// createdAt / updatedAt sont gérés par défautSql('CURRENT_TIMESTAMP') si tu l'as configuré
 		});
-		// await db.insert(video).values({
-		//   id: someUuid,
-		//   ownerId: event.locals.user.id,
-		//   title,
-		//   description,
-		//   sourceFilePath: filePath,
-		//   status: 'pending'
-		// });
 
-		// 8) Réponse
-		return new Response(JSON.stringify({
-			success: true,
-			message: 'Fichier uploadé',
-			finalFilePath
-		}), {
-			status: 200,
-			headers: { 'Content-Type': 'application/json' }
-		});
+		// 6) Ajouter une tâche à la queue de transcodage
+
+		try {
+			// 9) Déterminer le dossier de sortie
+			const outputDir = path.join('../', 'data', 'videos', videoId, 'transcoded');
+			// Ajouter la tâche à la queue
+			await transcodeQueue.add('transcode-video', {
+				videoId,
+				filePath: `../${finalFilePath}`,
+				outputDir
+			});
+
+			return new Response(JSON.stringify({
+				success: true,
+				message: 'Fichier uploadé',
+				finalFilePath
+			}), {
+				status: 200,
+				headers: { 'Content-Type': 'application/json' }
+			});
+		} catch (err) {
+			console.error('Erreur lors de l’ajout à la queue', err);
+			return new Response(JSON.stringify({ error: 'Erreur lors de l’ajout à la queue' }), { status: 500 });
+		}
 	} catch (err) {
 		console.error(err);
 		return fail(500, { message: 'Erreur serveur' });

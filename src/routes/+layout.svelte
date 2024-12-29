@@ -1,6 +1,6 @@
 <script lang="ts">
 	import 'tailwindcss/tailwind.css';
-	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
 	export let data;
 
 	$: data.user = data.user || null;
@@ -50,7 +50,7 @@
 	</header>
 	{/if}
 	<main
-		class="flex flex-col px-12 py-4 h-[calc(100dvh-4.2rem)]">
+		class="flex flex-col px-12 py-4 { page.url.pathname.split('/').length === 3 && page.url.pathname.split('/').at(1) === 'video'  ?  '!py-0' : '' } h-[calc(100dvh-4.2rem)]">
 		<slot />
 	</main>
 </div>

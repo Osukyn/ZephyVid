@@ -2,7 +2,7 @@
 
 	import VideoCard from '$lib/components/VideoCard.svelte';
 	import { type Video } from '$lib/server/db/schema';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
@@ -15,21 +15,43 @@
 	// Références sur l'élément DOM du master checkbox
 	let masterCheckboxEl: HTMLInputElement | null = null;
 	let deleteAllConfirmation: boolean = false;
+	let videoProgressStatus: { id: string, progress: number, status: string }[];
+
+	let inter;
 
 	// Initialiser le dictionnaire quand la page se charge
 	// (optionnel, si tu veux commencer avec tout à "false")
-	onMount(() => {
+	onMount(async () => {
 		for (const video of data.videos) {
 			// si la clé n'existe pas déjà, on la crée
 			if (checkedMap[video.id] === undefined) {
 				checkedMap[video.id] = false;
 			}
 		}
+
+		await getVideoProgress();
+
+		inter = setInterval(async () => {
+			await getVideoProgress();
+		}, 1000);
+
 		// On force la réactivité en recréant l'objet
 		checkedMap = { ...checkedMap };
 	});
 
+	onDestroy(() => {
+		if (inter) clearInterval(inter);
+	});
+
+	async function getVideoProgress() {
+		const response = await fetch('/api/videos/progress');
+		if (response.ok) {
+			videoProgressStatus = await response.json();
+		}
+	}
+
 	function handleDelete({ videoId }: { videoId: string }) {
+		// Supprimer la vidéo du DOM après l'animation
 		delete checkedMap[videoId];
 		checkedMap = { ...checkedMap };
 
@@ -141,39 +163,39 @@
 
 	function handleDeleteAllConfirmationCancel() {
 
-			const confirmationElement = document.getElementById('delete-toolbar-override');
-			if (confirmationElement) {
-				confirmationElement.children[0].animate(
-					[
-						{ opacity: 1 },
-						{ opacity: 0, display: 'none' }
-					],
-					{
-						duration: 75,
-						easing: 'ease-out',
-						fill: 'forwards'
-					}
-				);
-				confirmationElement.animate(
-					[
-						{ width: '100%' },
-						{ width: '0' }
-					],
-					{
-						duration: 300,
-						easing: 'ease-out',
-						fill: 'forwards'
-					}
-				);
-			}
+		const confirmationElement = document.getElementById('delete-toolbar-override');
+		if (confirmationElement) {
+			confirmationElement.children[0].animate(
+				[
+					{ opacity: 1 },
+					{ opacity: 0, display: 'none' }
+				],
+				{
+					duration: 75,
+					easing: 'ease-out',
+					fill: 'forwards'
+				}
+			);
+			confirmationElement.animate(
+				[
+					{ width: '100%' },
+					{ width: '0' }
+				],
+				{
+					duration: 300,
+					easing: 'ease-out',
+					fill: 'forwards'
+				}
+			);
+		}
 
-			setTimeout(() => {
-				deleteAllConfirmation = false;
-			}, 300);
+		setTimeout(() => {
+			deleteAllConfirmation = false;
+		}, 300);
 	}
 
 	function handleDeleteAllConfirmationConfirmed() {
-		fetch(`/api/videos?ids=${Object.keys(checkedMap).filter((key) => checkedMap[key] === true).toString()}`, {
+		fetch(`/api/video?ids=${Object.keys(checkedMap).filter((key) => checkedMap[key] === true).toString()}`, {
 			method: 'DELETE'
 		});
 
@@ -187,18 +209,22 @@
 </script>
 <h1 class="text-2xl mb-6">Mes vidéos <span class="text-stone-400"><strong>·</strong> {data.videos.length}</span></h1>
 
-<div class="flex flex-wrap gap-4">
-	{#each data.videos as video (video.id)}
-		<div
-			in:fade={{ duration: 100 }}
-			out:fade={{ duration: 100 }}
-			animate:flip={{duration: 100}}
-		>
-			<!-- Ton composant vidéo, par ex.: -->
-			<VideoCard {video} onDelete={handleDelete} bind:checked={checkedMap[video.id]} />
-		</div>
-	{/each}
-</div>
+{#if (videoProgressStatus)}
+	<div class="flex flex-wrap gap-4 overflow-y-auto">
+		{#each data.videos as video (video.id)}
+			<div
+				id={video.id}
+				in:fade={{ duration: 100 }}
+				animate:flip={{duration: 100}}
+				class="w-fit h-fit relative"
+			>
+				<!-- Ton composant vidéo, par ex.: -->
+				<VideoCard {video} onDelete={handleDelete} bind:checked={checkedMap[video.id]}
+									 progress={videoProgressStatus.find(progressData => progressData.id === video.id)} />
+			</div>
+		{/each}
+	</div>
+{/if}
 
 {#if isAnyChecked}
 	<div transition:fly={{y: 16, duration: 100}}

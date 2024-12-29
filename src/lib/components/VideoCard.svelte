@@ -1,18 +1,21 @@
 <script lang="ts">
 	import type { Video } from '$lib/server/db/schema';
 	import { fade } from 'svelte/transition';
+	import { goto } from '$app/navigation';
 
 	/**
 	 * Props de la vidéo.
 	 */
 	export let video: Video;
 	export let uploaderName: string = '';
+	export let progress: { id: string, progress: number, status: string } = null;
 	/**
 	 * Callback pour avertir le parent
 	 * lorsqu'on coche/décoche la checkbox.
 	 * Par défaut, c'est une fonction vide (pour éviter les erreurs si non fourni)
 	 */
-	export let onDelete: (args: { videoId: string }) => void = () => {};
+	export let onDelete: (args: { videoId: string }) => void = () => {
+	};
 
 	let hovered: boolean = false;
 	export let checked: boolean = false;
@@ -62,7 +65,7 @@
 			deleteConfirmation = false;
 		}, 200);
 		if (deleteVideo) {
-			const deleteResponse = await fetch(`/api/videos?id=${video.id}`, { method: 'DELETE' });
+			await fetch(`/api/video?id=${video.id}`, { method: 'DELETE' });
 			onDelete({ videoId: video.id });
 		} else {
 			const confirmationElement = document.getElementById(`confirmation-${video.id}`);
@@ -92,10 +95,15 @@
 			}
 		}
 	}
+
+	function playVideo() {
+		goto(`/video/${video.id}`);
+	}
 </script>
 
 <div id={video.id} class="relative">
-	<div role="article" class="card bg-base-300 w-[22rem] shadow-xl border-2 {checked ? 'border-primary' : 'border-transparent'}"
+	<div role="article"
+			 class="card bg-black w-[22rem] shadow-xl border-2 {checked ? 'border-primary' : 'border-transparent'}"
 			 onmouseenter={() => hovered = true} onmouseleave={() => hovered = false}>
 		<figure>
 			<div class="aspect-video w-full relative">
@@ -105,7 +113,8 @@
 									 class="checkbox checkbox-primary z-10" />
 					{/if}
 					{#if hovered && !checked}
-						<button class="btn btn-sm btn-square btn-ghost z-10 m-0" aria-label="Delete button" onclick={handleDeleteConfirmation}>
+						<button class="btn btn-sm btn-square btn-ghost z-10 m-0" aria-label="Delete button"
+										onclick={handleDeleteConfirmation}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
 									 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
 									 class="lucide lucide-trash-2">
@@ -118,9 +127,10 @@
 						</button>
 					{/if}
 				</div>
-				{#if hovered}
-					<div transition:fade={{duration: 100}} class="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50">
-						<button class="btn btn-square btn-lg btn-ghost" aria-label="Play button">
+				{#if hovered && (progress ? progress.status : 'pending') !== 'pending'}
+					<div transition:fade={{duration: 100}}
+							 class="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50">
+						<button class="btn btn-square btn-lg btn-ghost" aria-label="Play button" onclick={playVideo}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
 									 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
 									 class="lucide lucide-play">
@@ -129,15 +139,28 @@
 						</button>
 					</div>
 				{/if}
+				{#if ((progress ? progress.status : 'pending') === 'pending')}
+					<div
+						class="absolute flex flex-col justify-center items-center w-full h-full bg-black bg-opacity-85">
+						<p class="text-2xl font-bold text-center">Optimisation en cours</p>
+						<p class="text-lg font-bold text-center text-secondary">{progress.progress}%</p>
+					</div>
+					<progress class=" absolute bottom-0 progress-bar progress progress-primary w-full transition-all"
+										value={progress.progress} max="100"></progress>
+				{/if}
 
 				{#if video.thumbnail}
 					<img src={video.thumbnail} alt="Thumbnail" class="object-cover aspect-video w-full" />
 				{:else}
-					<img src="https://dynamicwallpaper.club/landing-vids/1.png" alt="Thumbnail" class="object-cover aspect-video w-full">
-					<!--<div class="object-cover aspect-video w-full bg-gray-700"></div>-->
+					{#if progress.progress >= 5 }
+						<img
+							src="http://localhost/{video.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg"
+							alt="Thumbnail" class="object-cover aspect-video w-full">
+					{:else}
+						<div class="object-cover aspect-video w-full bg-gray-700"></div>
+					{/if}
 				{/if}
 			</div>
-
 		</figure>
 		<div class="card-body !p-6">
 			<h2 class="card-title">{video.title}</h2>
@@ -166,3 +189,17 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+    .progress::-webkit-progress-value {
+        transition: width 0.3s ease; /* Animation pour les navigateurs WebKit (Chrome, Safari) */
+    }
+
+    .progress::-moz-progress-bar {
+        transition: width 0.3s ease; /* Animation pour Firefox */
+    }
+
+    .progress-bar {
+        transition: width 0.3s ease; /* Support pour des cas alternatifs */
+    }
+</style>
