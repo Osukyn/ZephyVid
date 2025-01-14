@@ -2,6 +2,7 @@
 	import type { Video } from '$lib/server/db/schema';
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
+	import { formatTimeAgoIntl } from '$lib/utils/Date.js';
 
 	/**
 	 * Props de la vidéo.
@@ -26,7 +27,7 @@
 	 * Tu peux transformer la date `uploadedAt` si tu veux (ex: new Date(...)).
 	 * Ici, on laisse tel quel pour la démo, ou on applique un toLocaleDateString().
 	 */
-	$: displayDate = `${video.createdAt.toLocaleDateString()} à ${video.createdAt.toLocaleTimeString()}`;
+	$: displayDate = `${formatTimeAgoIntl(video.createdAt)}`;
 
 	function handleDeleteConfirmation() {
 		deleteConfirmation = true;
@@ -170,7 +171,7 @@
 					<span>Par {uploaderName}, </span>
 				{/if}
 				<!-- Affichage de la date formatée -->
-				<span>le {displayDate}</span>
+				<span>{displayDate}</span>
 			</p>
 		</div>
 	</div>
