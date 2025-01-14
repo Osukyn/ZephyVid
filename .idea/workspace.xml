@@ -5,64 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add transcoding script">
-      <change afterPath="$PROJECT_DIR$/benchmark_hevc.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/Player.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/Captions.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/ChapterTitle.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/Gestures.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/TimeGroup.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/Tooltip.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/buttons/CaptionButton.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/buttons/FullscreenButton.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/buttons/MuteButton.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/buttons/PIPButton.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/buttons/PlayButton.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/layouts/VideoLayout.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/menus/CaptionSubmenu.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/menus/Menu.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/menus/MenuRadio.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/menus/SettingsMenu.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/menus/Submenu.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/menus/SubmenuButton.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/sliders/SliderChapters.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/sliders/SliderPreview.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/sliders/SliderThumb.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/sliders/TimeSlider.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/player/sliders/VolumeSlider.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/video/progress/+server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/video/transcode/end/+server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/videos/progress/+server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/register/+page.server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/register/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/video/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transcode_hls.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transcoding-server/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transcoding-server/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transcoding-server/process_video.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transcoding-server/worker.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/components/AutocompleteMultiUser.svelte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/components/Comment.svelte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/utils/CustomAbrController.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/lib/utils/Date.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/api/users/findOne/+server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/api/users/search/+server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/api/video/comment/+server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/api/video/like/+server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmark_hevc.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/Player.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/Player.svelte" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/components/VideoCard.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/VideoCard.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/player/ChapterTitle.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/ChapterTitle.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/player/Gestures.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/Gestures.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/player/layouts/VideoLayout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/layouts/VideoLayout.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/player/menus/Menu.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/menus/Menu.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/components/player/menus/SettingsMenu.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/menus/SettingsMenu.svelte" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/server/db/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server/db/schema.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/+layout.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/api/videos/+server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/api/video/+server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/demo/+page.svelte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/+page.server.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/+page.svelte" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/login/+page.server.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/login/+page.svelte" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/login/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/login/+page.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/register/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/register/+page.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/register/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/register/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/videos/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/+page.server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/videos/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+page.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/svelte.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/svelte.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transcode_hls.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/transcoding-server/process_video.sh" beforeDir="false" afterPath="$PROJECT_DIR$/transcoding-server/process_video.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +62,8 @@
         <option value="JavaScript File" />
         <option value="Player" />
         <option value="+page" />
+        <option value="Comment" />
+        <option value="AutocompleteMultiUser" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -108,12 +94,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Docker.docker-compose.yml.nginx: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.redis: Compose Deployment.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/osukyn/WebstormProjects/ZephyVid/src/lib/components/player",
+    "last_opened_file_path": "/Users/osukyn/WebstormProjects/ZephyVid/transcoding-server",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -129,23 +117,26 @@
     "DatabaseDriversLRU": [
       "sqlite",
       "redis"
+    ],
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
+      "SQLite"
     ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/lib/components/player" />
       <recent name="$PROJECT_DIR$/transcoding-server" />
+      <recent name="$PROJECT_DIR$/src/lib/components/player" />
       <recent name="$PROJECT_DIR$/static/790cace2-bb2c-4216-8fb7-7253af8fa74f" />
       <recent name="$PROJECT_DIR$/static" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/lib/assets" />
       <recent name="$PROJECT_DIR$/src/routes/api/videos/progress" />
       <recent name="$PROJECT_DIR$/src/routes/api/video" />
       <recent name="$PROJECT_DIR$/transcoding-server" />
       <recent name="$PROJECT_DIR$/src/lib/server" />
-      <recent name="$PROJECT_DIR$/src/routes/password/reset" />
     </key>
   </component>
   <component name="RunManager" selected="npm.dev">
@@ -225,7 +216,8 @@
       <workItem from="1735211937739" duration="2854000" />
       <workItem from="1735214806699" duration="56775000" />
       <workItem from="1735458726830" duration="9003000" />
-      <workItem from="1735483993407" duration="3348000" />
+      <workItem from="1735483993407" duration="18259000" />
+      <workItem from="1736286587819" duration="128457000" />
     </task>
     <task id="LOCAL-00001" summary="Add files to gitignore">
       <option name="closed" value="true" />
@@ -283,7 +275,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734989005422</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Add transcoding script">
+      <option name="closed" value="true" />
+      <created>1735500747994</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1735500747994</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
