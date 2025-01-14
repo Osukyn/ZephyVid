@@ -11,37 +11,7 @@
 	let invalidEmail = false;
 	let invalidPasswordConfirmation = false;
 
-	/*const submitRegister: SubmitFunction = async ({ formData, cancel }) => {
-		loading = true;
-		invalidCredentials = false;
-		otherError = false;
-		const { error } = await supabase.auth.signUp({
-				email: formData.get('email') as string,
-				password: formData.get('password') as string,
-				options: {
-					data: {
-						username: formData.get('username') as string
-					}
-				}
-			}
-		);
-		loading = false;
-		if (error) {
-			if (error instanceof AuthApiError && error.status === 400) {
-				console.error('Invalid email or password', error);
-				invalidCredentials = true;
-			} else {
-				console.error('Server error', error);
-				otherError = true;
-			}
-		} else {
-			goto('/');
-		}
-		cancel();
-	};*/
-
 	function validatePassword(event) {
-		console.log(event.target.value);
 		const value = event.target.value;
 		const minLength = value.length >= 8;
 		const upperCase = /[A-Z]/.test(value);
