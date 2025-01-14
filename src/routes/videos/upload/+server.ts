@@ -3,7 +3,7 @@ import { fail } from '@sveltejs/kit';
 import fs from 'fs/promises';
 import path from 'path';
 import { db } from '$lib/server/db';
-import { video } from '$lib/server/db/schema';
+import { video, videosToUsers } from '$lib/server/db/schema';
 import { randomUUID } from 'crypto';
 import IORedis from 'ioredis';
 import { Queue } from 'bullmq';
@@ -21,9 +21,15 @@ export const POST = async (event: never) => {
 	try {
 		// 2) Récup FormData
 		const formData = await event.request.formData();
+
 		const title = formData.get('title')?.toString();
 		const description = formData.get('description')?.toString();
 		const file = formData.get('videoFile') as File | null;
+		const visibility = formData.get('visibility') as 'private' | 'unlisted' | 'personalised';
+		let allowedUsers: string[] = [];
+		if (visibility === 'personalised') {
+			allowedUsers = JSON.parse(formData.get('allowedUsers') as string);
+		}
 
 		// 3) Vérifier champs
 		if (!title || !file) {
@@ -43,7 +49,7 @@ export const POST = async (event: never) => {
 		await fs.mkdir(uploadDir, { recursive: true });
 
 		const originalFileName = file.name; // ex: "myvideo.mp4"
-		const extension = path.extname(originalFileName) || '.mp4';
+		const extension = path.extname(originalFileName) || '.mkv';
 		const finalFilePath = path.join(uploadDir, `original${extension}`);
 
 		// 8) Convertir le File en Buffer et l'écrire sur disque
@@ -58,9 +64,17 @@ export const POST = async (event: never) => {
 			title,
 			description: typeof description === 'string' ? description : null,
 			sourceFilePath: finalFilePath,  // le chemin stocké en BDD
+			visibility,
 			status: 'pending' // ou "uploaded"
 			// createdAt / updatedAt sont gérés par défautSql('CURRENT_TIMESTAMP') si tu l'as configuré
 		});
+
+		// optionnel: insert en DB les utilisateurs autorisés
+		if (allowedUsers.length > 0) {
+			await db.insert(videosToUsers).values(
+				allowedUsers.map(userId => ({ videoId, userId }))
+			);
+		}
 
 		// 6) Ajouter une tâche à la queue de transcodage
 

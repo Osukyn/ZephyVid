@@ -1,15 +1,15 @@
 <script lang="ts">
 
-	import { onMount } from 'svelte';
-	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
+	import AutocompleteMultiUser from '$lib/components/AutocompleteMultiUser.svelte';
 
-	let title = '';
-	let description = '';
+	let title = $state('');
+	let description = $state('');
 	let file: File | null = null;
-	let isUploading = false;
+	let isUploading = $state(false);
 	let uploadProgress = 0;
 	let xhr: XMLHttpRequest | null = null; // pour pouvoir annuler
+	let selectedUsers: Array<User> = $state([]);
 
 	/**
 	 * Quand l'utilisateur sélectionne un fichier.
@@ -75,6 +75,10 @@
 		formData.append('title', title);
 		formData.append('description', description);
 		formData.append('videoFile', file);
+		formData.append('visibility', visibility);
+		if (visibility === 'personalised') {
+			formData.append('allowedUsers', JSON.stringify(selectedUsers.map(u => u.id)));
+		}
 
 		// Envoyer
 		xhr.send(formData);
@@ -90,6 +94,14 @@
 			uploadProgress = 0;
 		}
 	}
+
+	const visibilityInfo = {
+		private: 'La vidéo ne sera visible que par vous',
+		unlisted: 'La vidéo sera accessible à toute personne disposant du lien',
+		personalised: 'La vidéo sera accessible uniquement aux personnes que vous autorisez'
+	};
+
+	let visibility = $state('private');
 </script>
 
 <div class="flex justify-evenly items-center h-full">
@@ -97,7 +109,7 @@
 		<div class="card-body">
 			<h2 class="card-title">Mettre en ligne une vidéo</h2>
 			<p class="mb-2">Remplissez ce formulaire pour mettre en ligne votre video</p>
-			<form on:submit={handleSubmit}>
+			<form onsubmit={handleSubmit}>
 				<label class="form-control w-full mb-2">
 					<div class="label">
 						<span class="label-text">Titre</span>
@@ -121,8 +133,8 @@
 					<textarea name="description"
 										id="description"
 										rows="3"
-										bind:value={description} class="textarea textarea-bordered h-56 max-h-56"
-										placeholder="Présentez votre vidéo à vos spectateurs" maxlength="5000"></textarea>
+										bind:value={description} class="textarea textarea-bordered h-56 max-h-56 resize-none"
+										placeholder="Présentez votre vidéo à vos spectateurs" maxlength="8192" ></textarea>
 				</label>
 
 				<input
@@ -130,14 +142,58 @@
 					name="videoFile"
 					id="videoFile"
 					accept="video/mp4"
-					class="file-input w-full mb-8"
+					class="file-input w-full mb-2"
 					required
-					on:change={handleFileChange}
+					onchange={handleFileChange}
 				/>
 
-				<div class="card-actions flex-nowrap space-x-8">
+				<label class="form-control">
+					<div class="label">
+						<span class="label-text">Visibilité</span>
+					</div>
+					<select name="visibility" id="visibility" class="select select-bordered w-full" bind:value={visibility} required>
+						<option value="private" selected>Privée</option>
+						<option value="unlisted">Non répertoriée</option>
+						<option value="personalised">Personnalisée</option>
+					</select>
+					<div class="label">
+						<div class="flex items-center gap-1">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								class="stroke-base-content h-4 w-4 shrink-0">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+							</svg>
+							<span class="label-text-alt text-stone-400">{visibilityInfo[visibility]}</span>
+						</div>
+					</div>
+				</label>
+
+				{#if (visibility === 'personalised')}
+					<AutocompleteMultiUser bind:selectedUsers={selectedUsers}  />
+					<!--<label class="form-control">
+						<div class="label">
+							<span class="label-text">Personnes autorisées</span>
+						</div>
+						<input
+							type="text"
+							name="allowedUsers"
+							id="allowedUsers"
+							placeholder="Entrez les noms d'utilisateur des personnes autorisées"
+							class="input input-bordered w-full"
+							maxlength="100"
+						/>
+					</label>-->
+				{/if}
+
+				<div class="card-actions flex-nowrap space-x-8 mt-4">
 					<button class="btn btn-primary grow" type="submit" disabled={isUploading}>Envoyer</button>
-					<button class="btn btn-secondary grow" type="button" disabled={!isUploading} on:click={cancelUpload}>Annuler</button>
+					<button class="btn btn-secondary grow" type="button" disabled={!isUploading} onclick={cancelUpload}>Annuler</button>
 				</div>
 			</form>
 		</div>
