@@ -9,7 +9,7 @@
 	import VideoLayout from '$lib/components/player/layouts/VideoLayout.svelte';
 	import CustomAbrController from '$lib/utils/CustomAbrController';
 
-	let {  title = '' , src = '', status = '', poster = ''} = $props();
+	let { title = '', src = '', status = '', poster = '' } = $props();
 	let thumbnails = $state('');
 	let playerReady = $state(false);
 
@@ -34,17 +34,21 @@
 						testBandwidth: true,
 						lowLatencyMode: true,
 						abrController: CustomAbrController,
-						abrBandWidthUpFactor: 1.0,
+						abrBandWidthUpFactor: 1.0
 					};
 				}
 			});
 		}
-
-		setInterval(() => {
-		}, 1000);
+		const poster = document.getElementById('poster');
+		if (poster) {
+			const img = poster.firstElementChild as HTMLImageElement;
+			if (img) {
+				img.style.objectFit = 'contain';
+				img.style.width = '100%';
+				img.style.height = '100%';
+			}
+		}
 	}
-	// Fonction pour importer hls.js et le charger dans le player
-
 
 	function onPlayerReady() {
 		const provider = document.getElementById('provider');
@@ -52,16 +56,17 @@
 	}
 </script>
 
-<media-player logLevel="info" load="eager" id="player" playsInline viewType="video" streamType="on-demand" title={title} src={status === 'ready' ? `http://localhost/${src}/transcoded/master.m3u8` : `http://localhost/${src}/original.mp4`} class="h-full max-h-[80dvh]" keyTarget="document" autoplay autoPlay oncan-load={() => playerReady = true} oncan-play={onPlayerReady}>
+<media-player logLevel="info" load="eager" id="player" playsInline viewType="video" streamType="on-demand" title={title}
+							src={status === 'ready' ? `http://localhost/${src}/transcoded/master.m3u8` : `http://localhost/${src}/original.mp4`}
+							class="h-full max-h-[80dvh]" keyTarget="document" autoplay autoPlay oncan-load={() => playerReady = true}
+							oncan-play={onPlayerReady}>
 	<media-provider id="provider" class="bg-black">
-		<div class="absolute flex justify-center items-center left-0 top-0 right-0 bottom-0" >
-			<media-poster
-				class="inset-0 opacity-0 transition-opacity data-[visible]:opacity-100 [&>img]:w-full [&>img]:object-cover"
-				src={poster}
-				alt={title}
-			></media-poster>
-		</div>
-
+		<media-poster
+			id="poster"
+			class="absolute flex justify-center items-center object-cover left-0 top-0 right-0 bottom-0 opacity-0 inset-0 transition-opacity data-[visible]:opacity-100"
+			src={poster}
+			alt={title}
+		></media-poster>
 	</media-provider>
 	<VideoLayout bind:thumbnails>
 	</VideoLayout>
@@ -70,7 +75,8 @@
 {#if !playerReady}
 	<div class="flex justify-center items-center bg-black w-full h-full max-h-[calc(80dvh+0.33rem)]">
 		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white"
-				 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-circle w-32 h-32 animate-spin">
+				 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+				 class="lucide lucide-loader-circle w-32 h-32 animate-spin">
 			<path d="M21 12a9 9 0 1 1-6.219-8.56" />
 		</svg>
 	</div>
