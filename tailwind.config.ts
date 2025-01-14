@@ -5,6 +5,8 @@ import vidstack from 'vidstack/tailwind.cjs';
 
 import daisyui0 from 'daisyui/src/theming/themes';
 
+import tailwindcss_animate from 'tailwindcss-animate';
+
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
@@ -17,7 +19,9 @@ export default {
 		vidstack({
 			prefix: 'media',
 			webComponents: true
-		})
+		}),
+		tailwindcss_animate,
+		customVariants,
 	],
 	daisyui: {
 		themes: [
@@ -32,3 +36,8 @@ export default {
 		]
 	}
 } satisfies Config;
+
+function customVariants({ matchVariant }) {
+	// Strict version of `.group` to help with nested menus (i.e., submenus).
+	matchVariant('parent-data', (value) => `.parent[data-${value}] > &`);
+}
