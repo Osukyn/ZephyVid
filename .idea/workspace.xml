@@ -4,49 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add transcoding script">
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/AutocompleteMultiUser.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/components/Comment.svelte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/utils/CustomAbrController.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/utils/Date.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/users/findOne/+server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/users/search/+server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/video/comment/+server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/routes/api/video/like/+server.ts" afterDir="false" />
+    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add comments, description and like functionalities to video watching page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/benchmark_hevc.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nginx.conf" beforeDir="false" afterPath="$PROJECT_DIR$/nginx.conf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/lib/components/Player.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/Player.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/components/VideoCard.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/VideoCard.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/components/player/ChapterTitle.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/ChapterTitle.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/components/player/Gestures.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/Gestures.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/components/player/layouts/VideoLayout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/layouts/VideoLayout.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/components/player/menus/Menu.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/menus/Menu.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/components/player/menus/SettingsMenu.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/player/menus/SettingsMenu.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/server/db/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server/db/schema.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/+layout.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/demo/+page.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/+page.server.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/+page.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/login/+page.server.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/demo/lucia/login/+page.svelte" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/login/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/login/+page.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/register/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/register/+page.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/register/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/register/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/video/[videoId]/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/videos/+page.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/+page.server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/videos/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+page.svelte" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/upload/+server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/transcode_hls.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/transcoding-server/process_video.sh" beforeDir="false" afterPath="$PROJECT_DIR$/transcoding-server/process_video.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +178,7 @@
       <workItem from="1735214806699" duration="56775000" />
       <workItem from="1735458726830" duration="9003000" />
       <workItem from="1735483993407" duration="18259000" />
-      <workItem from="1736286587819" duration="128457000" />
+      <workItem from="1736286587819" duration="134374000" />
     </task>
     <task id="LOCAL-00001" summary="Add files to gitignore">
       <option name="closed" value="true" />
@@ -283,7 +244,127 @@
       <option name="project" value="LOCAL" />
       <updated>1735500747994</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Remove test scripts">
+      <option name="closed" value="true" />
+      <created>1736836039974</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836039974</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Add tailwind animate for easy animations of the player">
+      <option name="closed" value="true" />
+      <created>1736836095477</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836095477</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Optimize transcoding script for best quality, accurate compression, and easy auto bandwidth detection">
+      <option name="closed" value="true" />
+      <created>1736836198195</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836198195</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Add tailwind animate in tailwind conf">
+      <option name="closed" value="true" />
+      <created>1736836233992</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836233992</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Update nginx and docker conf to enable images storage">
+      <option name="closed" value="true" />
+      <created>1736836275725</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836275725</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Remove demo lucia auth pages">
+      <option name="closed" value="true" />
+      <created>1736836313677</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836313677</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add logo">
+      <option name="closed" value="true" />
+      <created>1736836324479</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836324479</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Add logo to page header">
+      <option name="closed" value="true" />
+      <created>1736836390887</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836390887</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Add register page">
+      <option name="closed" value="true" />
+      <created>1736836440293</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836440293</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Add visibility option in video uploading form">
+      <option name="closed" value="true" />
+      <created>1736836592600</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836592601</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Remove old demo lucia reference">
+      <option name="closed" value="true" />
+      <created>1736836619491</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836619491</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Add visibility option in video uploading form">
+      <option name="closed" value="true" />
+      <created>1736836720891</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836720891</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Update custom vidstack player style and functionalities">
+      <option name="closed" value="true" />
+      <created>1736836780749</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836780749</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Update custom vidstack player style and functionalities">
+      <option name="closed" value="true" />
+      <created>1736836825403</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836825403</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Add comments, description and like functionalities to video watching page">
+      <option name="closed" value="true" />
+      <created>1736836914669</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1736836914670</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -298,6 +379,19 @@
     <MESSAGE value="Add video list view and delete management" />
     <MESSAGE value="Add logout to navbar and new login page" />
     <MESSAGE value="Add transcoding script" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add transcoding script" />
+    <MESSAGE value="Remove test scripts" />
+    <MESSAGE value="Add tailwind animate for easy animations of the player" />
+    <MESSAGE value="Optimize transcoding script for best quality, accurate compression, and easy auto bandwidth detection" />
+    <MESSAGE value="Add tailwind animate in tailwind conf" />
+    <MESSAGE value="Update nginx and docker conf to enable images storage" />
+    <MESSAGE value="Remove demo lucia auth pages" />
+    <MESSAGE value="Add logo" />
+    <MESSAGE value="Add logo to page header" />
+    <MESSAGE value="Add register page" />
+    <MESSAGE value="Remove old demo lucia reference" />
+    <MESSAGE value="Add visibility option in video uploading form" />
+    <MESSAGE value="Update custom vidstack player style and functionalities" />
+    <MESSAGE value="Add comments, description and like functionalities to video watching page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add comments, description and like functionalities to video watching page" />
   </component>
 </project>
