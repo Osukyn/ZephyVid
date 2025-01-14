@@ -1,6 +1,7 @@
 <script lang="ts">
 	import 'tailwindcss/tailwind.css';
 	import { page } from '$app/state';
+	import logo from '$lib/assets/logo.svg';
 	export let data;
 
 	$: data.user = data.user || null;
@@ -11,7 +12,10 @@
 	<header>
 		<div class="navbar border-b-[1px] border-stone-900 px-12 shadow-2xl">
 			<div class="flex-1">
-				<a class="btn btn-ghost text-xl !px-0" href="/videos">ZephyVid</a>
+				<a class="btn btn-ghost text-xl !pl-0" href="/videos">
+					<img src={logo} alt="logo" class="h-10 w-12" />
+					ZephyVid
+				</a>
 			</div>
 			<div class="flex-none gap-2">
 				<a class="btn btn-ghost btn-square" href="/videos/upload" aria-label="upload video button">
@@ -50,7 +54,7 @@
 	</header>
 	{/if}
 	<main
-		class="flex flex-col px-12 py-4 { page.url.pathname.split('/').length === 3 && page.url.pathname.split('/').at(1) === 'video'  ?  '!py-0' : '' } h-[calc(100dvh-4.2rem)]">
+		class="flex flex-col px-12 py-4 { page.url.pathname.split('/').length === 3 && page.url.pathname.split('/').at(1) === 'video'  ?  '!p-0' : '' } h-[calc(100dvh-4.2rem)]">
 		<slot />
 	</main>
 </div>
