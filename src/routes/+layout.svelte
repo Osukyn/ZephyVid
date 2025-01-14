@@ -10,7 +10,7 @@
 <div class="relative flex min-h-dvh flex-col overflow-hidden">
 	{#if data.user}
 	<header>
-		<div class="navbar border-b-[1px] border-stone-900 px-12 shadow-2xl">
+		<div class="navbar border-b-[1px] border-stone-900 px-4 md:px-12 shadow-2xl">
 			<div class="flex-1">
 				<a class="btn btn-ghost text-xl !pl-0" href="/videos">
 					<img src={logo} alt="logo" class="h-10 w-12" />

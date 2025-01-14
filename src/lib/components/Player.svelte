@@ -58,7 +58,7 @@
 
 <media-player load="eager" id="player" playsInline viewType="video" streamType="on-demand" title={title}
 							src={status === 'ready' ? `http://localhost/${src}/transcoded/master.m3u8` : `http://localhost/${src}/original.mp4`}
-							class="h-full max-h-[80dvh]" keyTarget="document" autoplay autoPlay oncan-load={() => playerReady = true}
+							class="md:h-full md:max-h-[80dvh]" keyTarget="document" autoplay autoPlay oncan-load={() => playerReady = true}
 							oncan-play={onPlayerReady}>
 	<media-provider id="provider" class="bg-black">
 		<media-poster
@@ -73,7 +73,7 @@
 </media-player>
 
 {#if !playerReady}
-	<div class="flex justify-center items-center bg-black w-full h-full max-h-[calc(80dvh+0.33rem)]">
+	<div class="flex justify-center items-center bg-black w-full md:h-full md:max-h-[calc(80dvh+0.33rem)]">
 		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white"
 				 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
 				 class="lucide lucide-loader-circle w-32 h-32 animate-spin">

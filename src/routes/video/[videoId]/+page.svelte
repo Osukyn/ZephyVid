@@ -96,8 +96,8 @@
 	<Player src={source} status={data.videoData.status} title={data.videoData.title} poster="http://localhost/{data.videoData.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg" />
 
 	<div class="flex justify-center">
-		<div class="flex flex-wrap gap-4 mt-2 px-12 w-full max-w-[1686px]">
-			<div class="lg:max-w-xl w-full grow">
+		<div class="grid md:grid-cols-9 grid-cols-1 gap-4 mt-2 px-4 md:px-12 w-full max-w-[1686px]">
+			<div class="col-span-5 w-full">
 				<h1 class="text-xl font-bold mb-2">{data.videoData.title}</h1>
 				<div class="flex items-center justify-between gap-4 mb-2">
 					<a href="/user/{data.ownerData.username}" class="flex items-center gap-2">
@@ -109,7 +109,6 @@
 						<span class="font-bold">{data.ownerData.username}</span>
 					</a>
 					<div class="flex items-center">
-						<span class="text-sm text-gray-500">{data.videoData.viewCount} vues</span>
 						<div class="join rounded-full">
 							<button class="custom-radio btn join-item" aria-label="like" onclick={() => handleLike(1)}>
 								{#if (like === 0 || like === -1)}
@@ -144,7 +143,7 @@
 				</div>
 				<div id="desc-container" class="card bg-base-200 { collapsed ? 'cursor-pointer' : '' }">
 					<div id="desc" class="card-body !p-4 overflow-hidden">
-						<h2 class="text-sm font-bold">{displayDate}</h2>
+						<h2 class="text-sm font-bold">{data.videoData.viewCount} vues {displayDate}</h2>
 						<p class="text-sm text-gray-500" contenteditable="false"
 							 bind:innerText={data.videoData.description}></p>
 						{#if !collapsed}
@@ -163,8 +162,7 @@
 				</div>
 			</div>
 
-
-			<div class="flex-grow min-w-80">
+			<div class="col-span-4 min-w-80">
 				<h2 class="text-xl font-bold">Commentaires <span
 					class="text-stone-400"><strong>·</strong> {data.comments.length}</span></h2>
 				<div class="mt-4">
