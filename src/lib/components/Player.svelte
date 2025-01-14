@@ -56,7 +56,7 @@
 	}
 </script>
 
-<media-player logLevel="info" load="eager" id="player" playsInline viewType="video" streamType="on-demand" title={title}
+<media-player load="eager" id="player" playsInline viewType="video" streamType="on-demand" title={title}
 							src={status === 'ready' ? `http://localhost/${src}/transcoded/master.m3u8` : `http://localhost/${src}/original.mp4`}
 							class="h-full max-h-[80dvh]" keyTarget="document" autoplay autoPlay oncan-load={() => playerReady = true}
 							oncan-play={onPlayerReady}>
