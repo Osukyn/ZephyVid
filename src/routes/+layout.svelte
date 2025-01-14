@@ -2,6 +2,8 @@
 	import 'tailwindcss/tailwind.css';
 	import { page } from '$app/state';
 	import logo from '$lib/assets/logo.svg';
+	import Avatar from '$lib/components/Avatar.svelte';
+	import { formatProfileImage } from '$lib/utils/Avatar';
 	export let data;
 
 	$: data.user = data.user || null;
@@ -29,9 +31,11 @@
 				</a>
 				<div class="dropdown dropdown-end">
 					<div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar placeholder">
-							<div class="bg-neutral text-neutral-content w-10 rounded-full">
-								<span class="text-3xl">{data.user.username[0].toUpperCase()}</span>
-							</div>
+						<Avatar
+							avatarUrl={formatProfileImage(data.user.profileImage)}
+							fallbackName={data.user.username}
+							size="10"
+							></Avatar>
 					</div>
 					<ul
 						tabindex="0"

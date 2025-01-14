@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { User } from '$lib/server/db/schema';
 	import { page } from '$app/state';
+	import Avatar from '$lib/components/Avatar.svelte';
+	import { formatProfileImage } from '$lib/utils/Avatar';
 
 	// Valeur saisie dans le champ
 	let searchTerm: string = $state('');
@@ -29,10 +31,6 @@
 			console.error('Erreur fetchMatchingUsers', error);
 			return [];
 		}
-	}
-
-	function formatProfileImage(image: string) {
-		return `http://${page.url.hostname}/${image}`;
 	}
 
 	let typingTimeout: ReturnType<typeof setTimeout> | undefined;
@@ -155,17 +153,9 @@
 		<div class="flex flex-wrap gap-2 mb-2">
 			{#each selectedUsers as user}
 				<div class="badge badge-primary !pl-1 flex items-center gap-2 h-10">
-					{#if user.profileImage}
-						<img
-							src={formatProfileImage(user.profileImage)}
-							alt="avatar"
-							class="w-8 h-8 rounded-full"
-						/>
-					{:else}
-						<div class="bg-neutral text-neutral-content w-8 h-8 rounded-full flex items-center justify-center">
-							<span>{user.username[0].toUpperCase()}</span>
-						</div>
-					{/if}
+					<Avatar
+						avatarUrl={formatProfileImage(user.profileImage)}
+						fallbackName={user.username}></Avatar>
 					<strong>{user.username}</strong>
 					<!-- Bouton pour retirer la personne -->
 					<button
@@ -198,17 +188,10 @@
 						class:selected={i === activeIndex}
 						onclick={() => selectUser(user)}
 					>
-						{#if user.profileImage}
-							<img
-								src={formatProfileImage(user.profileImage)}
-								alt="avatar"
-								class="w-8 h-8 rounded-full"
-							/>
-						{:else}
-							<div class="bg-primary text-primary-content w-8 h-8 rounded-full flex items-center justify-center">
-								<span>{user.username[0].toUpperCase()}</span>
-							</div>
-						{/if}
+						<Avatar
+							avatarUrl={formatProfileImage(user.profileImage)}
+							fallbackName={user.username}
+							fallbackColor="primary"></Avatar>
 						<span>{user.username}</span>
 					</li>
 				{/each}
