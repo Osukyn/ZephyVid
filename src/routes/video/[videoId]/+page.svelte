@@ -6,8 +6,9 @@
 	import { fade } from 'svelte/transition';
 	import Comment from '$lib/components/Comment.svelte';
 	import { formatNumber } from '$lib/utils/Number';
+	import Avatar from '$lib/components/Avatar.svelte';
+	import { flip } from 'svelte/animate';
 
-	// use rune to get the video data
 	let { data } = $props();
 
 	let displayDate = $state('');
@@ -20,6 +21,9 @@
 		likes: '',
 		dislikes: ''
 	});
+	let sort = $state('recent');
+	let sortedComments = $derived(sortComments(sort, data.comments));
+	let displayMainComments = $derived(sortedComments.filter((comment) => comment.comments.parentCommentId === null));
 
 	onMount(() => {
 		$effect(() => {
@@ -102,22 +106,30 @@
 
 		likeData = await result.json();
 	}
+
+	let description = $state(data.videoData.description === '' ? 'Aucune description n\'a été ajoutée à cette vidéo.' : data.videoData.description);
+
+	function sortComments(sortMode: string, comments: Array<any>) {
+		if (sortMode === 'popular') {
+			return comments;
+			// data.comments = data.comments.sort((a, b) => b.comments.likes - a.comments.likes);
+		} else if (sortMode === 'recent') {
+			return comments.sort((a, b) => new Date(b.comments.createdAt).getTime() - new Date(a.comments.createdAt).getTime());
+		}
+	}
 </script>
 
 <div class="overflow-auto h-full pb-4">
-	<Player src={source} status={data.videoData.status} title={data.videoData.title} poster="http://localhost/{data.videoData.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg" />
+	<Player src={source} status={data.videoData.status} title={data.videoData.title}
+					poster="http://localhost/{data.videoData.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg" />
 
 	<div class="flex justify-center">
-		<div class="grid md:grid-cols-9 grid-cols-1 gap-4 mt-2 px-4 md:px-12 w-full max-w-[1686px]">
-			<div class="col-span-5 w-full">
+		<div class="flex flex-col gap-4 mt-2 px-4 md:px-12 w-full max-w-screen-lg">
+			<div class="w-full">
 				<h1 class="text-xl font-bold mb-2">{data.videoData.title}</h1>
 				<div class="flex items-center justify-between gap-4 mb-2">
 					<a href="/user/{data.ownerData.username}" class="flex items-center gap-2">
-						<div class="avatar placeholder select-none">
-							<div class="bg-neutral text-neutral-content w-10 rounded-full">
-								<span class="text-3xl">{data.ownerData.username[0].toUpperCase()}</span>
-							</div>
-						</div>
+						<Avatar avatarUrl={data.ownerData.profileImage} fallbackName={data.ownerData.username} size="10" />
 						<span class="font-bold">{data.ownerData.username}</span>
 					</a>
 					<div class="flex items-center">
@@ -157,7 +169,7 @@
 					<div id="desc" class="card-body !p-4 overflow-hidden">
 						<h2 class="text-sm font-bold">{viewCount} vues {displayDate}</h2>
 						<p class="text-sm text-gray-500" contenteditable="false"
-							 bind:innerText={data.videoData.description}></p>
+							 bind:innerText={description}></p>
 						{#if !collapsed}
 							<div class="card-actions justify-start">
 								<button class="btn btn-sm" onclick={() => collapse(true)}>Moins</button>
@@ -174,19 +186,41 @@
 				</div>
 			</div>
 
-			<div class="col-span-4 min-w-80">
-				<h2 class="text-xl font-bold">Commentaires <span
-					class="text-stone-400"><strong>·</strong> {data.comments.length}</span></h2>
+			<div>
+				<div class="flex items-center gap-4">
+					<h2 class="text-xl font-bold">Commentaires <span
+						class="text-stone-400"><strong>·</strong> {data.comments.length}</span>
+					</h2>
+					<div class="dropdown">
+						<div tabindex="0" role="button" class="btn btn-ghost">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+									 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+									 class="lucide lucide-list-filter">
+								<path d="M3 6h18" />
+								<path d="M7 12h10" />
+								<path d="M10 18h4" />
+							</svg>
+							Trier par
+						</div>
+						<ul tabindex="0" class="dropdown-content menu bg-base-300 rounded-box z-[1] w-40 p-2 shadow ">
+							<li>
+								<a class="btn btn-ghost btn-sm !justify-start" onclick={() => sort = 'popular'}>
+									Popularité
+								</a>
+							</li>
+							<li>
+								<a class="btn btn-ghost btn-sm !justify-start" onclick={() => sort = 'recent'}>
+									Les plus récents
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
 				<div class="mt-4">
 					<form class="mb-4" action="?/comment" method="POST" use:enhance onreset={onreset}>
 						<div class="flex flex-col">
 							<div class="flex items-start gap-4">
-								<div class="avatar placeholder select-none">
-									<div class="bg-neutral text-neutral-content w-10 rounded-full">
-										<span class="text-3xl">{data.user.username[0].toUpperCase()}</span>
-									</div>
-								</div>
-								<input name="videoId" type="text" class="hidden" bind:value={data.videoId}>
+								<Avatar avatarUrl={data.user.profileImage} fallbackName={data.user.username} size="10" />
 								<input name="parent" type="text" class="hidden">
 								<textarea name="comment"
 													id="new_comment"
@@ -196,22 +230,22 @@
 													placeholder="Ajoutez un commentaire..." maxlength="8192"
 													oninput={handleInput}></textarea>
 							</div>
-							{#if newComment.length > 0}
-								<div transition:fade={{duration: 100}} class="flex justify-end gap-2 mt-2">
-									<button class="btn btn-ghost btn-sm" type="reset">Annuler</button>
-									<button class="btn btn-primary btn-sm" type="submit">Commenter</button>
-								</div>
-							{/if}
+							<div transition:fade={{duration: 100}} class="flex justify-end gap-2 mt-2">
+								<button class="btn btn-ghost btn-sm" type="reset" disabled={newComment.length < 1}>Annuler</button>
+								<button class="btn btn-primary btn-sm" type="submit" disabled={newComment.length < 1}>Commenter</button>
+							</div>
 						</div>
 					</form>
 					{#if data.comments.length === 0}
 						<p class="text-sm text-gray-500 text-center">Aucun commentaire pour le moment</p>
 					{:else}
-						{#each data.comments.filter(com => com.comments.parentCommentId === null) as comment}
-							<div transition:fade={{duration: 100}}>
-								<Comment {comment} user={data.user} />
-							</div>
-						{/each}
+						<div class="flex flex-col gap-4 w-full">
+							{#each displayMainComments as comment (comment.comments.id)}
+								<div id={comment.comments.id} transition:fade={{duration: 100}} animate:flip={{duration: 100}}>
+									<Comment {comment} user={data.user} />
+								</div>
+							{/each}
+						</div>
 					{/if}
 				</div>
 			</div>
