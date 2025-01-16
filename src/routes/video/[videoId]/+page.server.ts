@@ -83,15 +83,6 @@ export const load = async (event) => {
 		.leftJoin(table.commentVotes, eq(table.comments.id, table.commentVotes.commentId))
 		.innerJoin(table.user, eq(table.user.id, table.comments.userId));
 
-	console.log({
-		user: event.locals.user,
-		videoId: event.params.videoId,
-		videoData: videoData[0],
-		ownerData: ownerData[0],
-		comments,
-		likeData
-	});
-
 	return {
 		user: event.locals.user,
 		videoId: event.params.videoId,
@@ -111,7 +102,7 @@ export const actions = {
 		const formData = await event.request.formData();
 
 		const comment = formData.get('comment');
-		const videoId = formData.get('videoId');
+		const videoId = event.params.videoId;
 		const parent = formData.get('parent');
 
 		if (!comment || !videoId) {
@@ -136,7 +127,6 @@ export const actions = {
 		}
 	},
 	deleteComment: async (event) => {
-		console.log('deleteComment');
 		const user = event.locals.user;
 		if (!user) {
 			return redirect(302, '/login');
