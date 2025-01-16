@@ -25,7 +25,6 @@
 		if (player) {
 			player.addEventListener('provider-change', (event) => {
 				const provider = event.detail;
-				console.log('provider', provider);
 				if (provider?.type === 'hls') {
 					provider.library = Hls;
 					// Configuration de hls.js
