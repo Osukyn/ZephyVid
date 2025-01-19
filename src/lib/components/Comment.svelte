@@ -3,6 +3,7 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import { formatProfileImage } from '$lib/utils/Avatar.js';
 	import { formatTimeAgoIntl } from '$lib/utils/Date.js';
+	import { onDestroy, onMount } from 'svelte';
 
 	let { comment, user }: {
 		comment: any,
@@ -12,20 +13,31 @@
 			profileImage: string | null,
 		},
 	} = $props();
-	let formatDate = $derived(typeof navigator !== 'undefined' ? formatTimeAgoIntl(comment.comments.createdAt) : '');
+	let updatedFormatDate = $state('');
+	let updatedFormatDateInterval: number | null = setInterval(() => {
+		if (typeof navigator !== 'undefined') updatedFormatDate = formatTimeAgoIntl(comment.createdAt);
+	}, 10000) as unknown as number;
+
+	onMount(() => {
+		updatedFormatDate = formatTimeAgoIntl(comment.createdAt);
+	});
+
+	onDestroy(() => {
+		if (updatedFormatDateInterval) clearInterval(updatedFormatDateInterval);
+	});
 </script>
 
 <div class="flex gap-4 w-full">
-	<Avatar avatarUrl={formatProfileImage(comment.user.profileImage)} fallbackName={comment.user.username} size="10"
-					ring={user && user.id === comment.user.id} />
+	<Avatar avatarUrl={formatProfileImage(comment.profileImage)} fallbackName={comment.username} size="10"
+					ring={user && user.id === comment.userId} />
 	<div class="w-full">
 		<div class="flex gap-2">
-			<h3 class="align-text-top leading-none font-bold">{comment.user.username}</h3>
-			<p class="text-xs text-base-content opacity-70">{formatDate}</p>
+			<h3 class="align-text-top leading-none font-bold">{comment.username}</h3>
+			<p class="text-xs text-base-content opacity-70">{updatedFormatDate}</p>
 		</div>
-		<p>{comment.comments.content}</p>
+		<p>{comment.content}</p>
 	</div>
-	{#if user && user.id === comment.user.id}
+	{#if user && user.id === comment.userId}
 		<div class="dropdown dropdown-end">
 			<div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -51,7 +63,7 @@
 				</li>
 				<li>
 					<button class="btn btn-ghost btn-sm !justify-start"
-									onclick={() => document.getElementById(`deleteModal-${comment.comments.id}`)?.showModal()}>
+									onclick={() => document.getElementById(`deleteModal-${comment.id}`)?.showModal()}>
 						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
 								 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
 								 class="lucide lucide-trash-2">
@@ -69,7 +81,7 @@
 	{/if}
 </div>
 
-<dialog id="deleteModal-{comment.comments.id}" class="modal">
+<dialog id="deleteModal-{comment.id}" class="modal">
 	<div class="modal-box">
 		<h3 class="text-lg font-bold">Suppression du commentaire</h3>
 		<p class="pt-4">Voulez-vous réellement supprimer ce commentaire ?</p>
@@ -79,8 +91,8 @@
 				<button class="btn">Annuler</button>
 			</form>
 			<form action="?/deleteComment" method="POST" use:enhance>
-				<input type="hidden" name="commentId" value="{comment.comments.id}" />
-				<button type="submit" class="btn btn-error" onclick={() => document.getElementById(`deleteModal-${comment.comments.id}`)?.close()}>Supprimer</button>
+				<input type="hidden" name="commentId" value="{comment.id}" />
+				<button type="submit" class="btn btn-error" onclick={() => document.getElementById(`deleteModal-${comment.id}`)?.close()}>Supprimer</button>
 			</form>
 		</div>
 	</div>

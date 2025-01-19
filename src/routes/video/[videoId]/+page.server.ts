@@ -76,19 +76,57 @@ export const load = async (event) => {
 	if (ownerData.length === 0) {
 		throw redirect(302, '/videos');
 	}
-	const comments = await db
+	/*const comments = await db
 		.select()
 		.from(table.comments)
 		.where(eq(table.comments.videoId, event.params.videoId))
 		.leftJoin(table.commentVotes, eq(table.comments.id, table.commentVotes.commentId))
-		.innerJoin(table.user, eq(table.user.id, table.comments.userId));
+		.innerJoin(table.user, eq(table.user.id, table.comments.userId));*/
+
+	const commentsWithVotes = await db.select({
+		id: table.comments.id,           // ID du commentaire
+		content: table.comments.content, // Contenu
+		createdAt: table.comments.createdAt,
+		updatedAt: table.comments.updatedAt,
+		parentCommentId: table.comments.parentCommentId,
+		userId: table.user.id,                  // ID de l'utilisateur qui a posté le commentaire
+		username: table.user.username,          // Son pseudo
+		profileImage: table.user.profileImage,
+		likes: sql<number>`SUM(
+		    CASE WHEN ${table.commentVotes.value} = 1 
+		         THEN 1 
+		         ELSE 0 
+		    END
+		)`.as('likes'),
+		dislikes: sql<number>`SUM(
+		    CASE WHEN ${table.commentVotes.value} = -1 
+		         THEN 1 
+		         ELSE 0 
+		    END
+		)`.as('dislikes'),
+		userVote: sql<number>`MAX(
+			CASE WHEN ${table.commentVotes.userId} = ${event.locals.user.id} 
+			     THEN ${table.commentVotes.value} 
+			     ELSE 0 
+			END
+		)`.as('userVote')
+	})
+		.from(table.comments)
+		// Joindre l'utilisateur qui a posté le commentaire
+		.innerJoin(table.user, eq(table.user.id, table.comments.userId))
+		// Joindre (en left) les votes sur ce commentaire
+		.leftJoin(table.commentVotes, eq(table.commentVotes.commentId, table.comments.id))
+		.where(eq(table.comments.videoId, event.params.videoId))
+		// On agrège par l'ID du commentaire (et l'ID de l'user qui a posté)
+		.groupBy(table.comments.id, table.user.id)
+		.orderBy(table.comments.createdAt);
 
 	return {
 		user: event.locals.user,
 		videoId: event.params.videoId,
 		videoData: videoData[0],
 		ownerData: ownerData[0],
-		comments,
+		comments: commentsWithVotes,
 		likeData
 	};
 };

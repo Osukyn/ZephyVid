@@ -23,7 +23,7 @@
 	});
 	let sort = $state('recent');
 	let sortedComments = $derived(sortComments(sort, data.comments));
-	let displayMainComments = $derived(sortedComments.filter((comment) => comment.comments.parentCommentId === null));
+	let displayMainComments = $derived(sortedComments.filter((comment) => comment.parentCommentId === null));
 
 	onMount(() => {
 		$effect(() => {
@@ -110,11 +110,28 @@
 	let description = $state(data.videoData.description === '' ? 'Aucune description n\'a été ajoutée à cette vidéo.' : data.videoData.description);
 
 	function sortComments(sortMode: string, comments: Array<any>) {
+		let sorted = [...comments];
 		if (sortMode === 'popular') {
-			return comments;
-			// data.comments = data.comments.sort((a, b) => b.comments.likes - a.comments.likes);
+			sorted.sort((a, b) => {
+				const scoreA = a.likes - a.dislikes;
+				const scoreB = b.likes - b.dislikes;
+				if (scoreB !== scoreA) {
+					return scoreB - scoreA;
+				}
+				return b.createdAt.getTime() - a.createdAt.getTime();
+			});
 		} else if (sortMode === 'recent') {
-			return comments.sort((a, b) => new Date(b.comments.createdAt).getTime() - new Date(a.comments.createdAt).getTime());
+			sorted.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+		}
+		return sorted;
+	}
+
+	function handleSortClick(sortMode: string) {
+		sort = sortMode;
+		const dialog = document.getElementById('sort-dropdown');
+		if (dialog) {
+			dialog.removeAttribute('tabIndex');
+			dialog.setAttribute('tabIndex', '0');
 		}
 	}
 </script>
@@ -202,14 +219,14 @@
 							</svg>
 							Trier par
 						</div>
-						<ul tabindex="0" class="dropdown-content menu bg-base-300 rounded-box z-[1] w-40 p-2 shadow ">
+						<ul id="sort-dropdown" tabindex="0" class="dropdown-content menu bg-base-300 rounded-box z-[1] w-40 p-2 shadow ">
 							<li>
-								<a class="btn btn-ghost btn-sm !justify-start" onclick={() => sort = 'popular'}>
+								<a class="btn {sort === 'popular' ? 'btn-primary' : 'btn-ghost'} btn-sm !justify-start" onclick={() => handleSortClick('popular')}>
 									Popularité
 								</a>
 							</li>
 							<li>
-								<a class="btn btn-ghost btn-sm !justify-start" onclick={() => sort = 'recent'}>
+								<a class="btn {sort === 'recent' ? 'btn-primary' : 'btn-ghost'} btn-sm !justify-start" onclick={() => handleSortClick('recent')}>
 									Les plus récents
 								</a>
 							</li>
@@ -240,8 +257,8 @@
 						<p class="text-sm text-gray-500 text-center">Aucun commentaire pour le moment</p>
 					{:else}
 						<div class="flex flex-col gap-4 w-full">
-							{#each displayMainComments as comment (comment.comments.id)}
-								<div id={comment.comments.id} transition:fade={{duration: 100}} animate:flip={{duration: 100}}>
+							{#each displayMainComments as comment (comment.id)}
+								<div id={comment.id} transition:fade={{duration: 100}} animate:flip={{duration: 100}}>
 									<Comment {comment} user={data.user} />
 								</div>
 							{/each}
