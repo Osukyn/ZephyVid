@@ -104,7 +104,7 @@
 
 <div id={video.id} class="relative">
 	<div role="article"
-			 class="card bg-black w-[22rem] shadow-xl border-2 {checked ? 'border-primary' : 'border-transparent'}"
+			 class="w-[22rem] border-2 rounded-xl {checked ? 'border-primary' : 'border-transparent'}"
 			 onmouseenter={() => hovered = true} onmouseleave={() => hovered = false}>
 		<figure>
 			<div class="aspect-video w-full relative">
@@ -130,7 +130,7 @@
 				</div>
 				{#if hovered && (progress ? progress.status : 'pending') !== 'pending'}
 					<div transition:fade={{duration: 100}}
-							 class="absolute flex justify-center items-center w-full h-full bg-black bg-opacity-50">
+							 class="absolute flex justify-center items-center w-full h-full bg-base-100 bg-opacity-50 rounded-xl">
 						<button class="btn btn-square btn-lg btn-ghost" aria-label="Play button" onclick={playVideo}>
 							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
 									 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
@@ -142,7 +142,7 @@
 				{/if}
 				{#if ((progress ? progress.status : 'pending') === 'pending')}
 					<div
-						class="absolute flex flex-col justify-center items-center w-full h-full bg-black bg-opacity-85">
+						class="absolute flex flex-col justify-center items-center w-full h-full bg-base-100 bg-opacity-85 rounded-xl">
 						<p class="text-2xl font-bold text-center">Optimisation en cours</p>
 						<p class="text-lg font-bold text-center text-secondary">{progress.progress}%</p>
 					</div>
@@ -151,20 +151,20 @@
 				{/if}
 
 				{#if video.thumbnail}
-					<img src={video.thumbnail} alt="Thumbnail" class="object-cover aspect-video w-full" />
+						<img src={video.thumbnail} alt="Thumbnail" class="object-cover aspect-video w-full rounded-xl" />
 				{:else}
 					{#if progress.progress >= 5 }
 						<img
 							src="http://localhost/{video.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg"
-							alt="Thumbnail" class="object-cover aspect-video w-full">
+							alt="Thumbnail" class="object-cover aspect-video w-full rounded-xl">
 					{:else}
 						<div class="object-cover aspect-video w-full bg-gray-700"></div>
 					{/if}
 				{/if}
 			</div>
 		</figure>
-		<div class="card-body !p-6">
-			<h2 class="card-title">{video.title}</h2>
+		<div class="overflow-hidden p-2">
+			<h2 class="card-title text-wrap overflow-hidden">{video.title}</h2>
 			<p class="text-sm text-gray-500">
 				<!-- Si on a un uploaderName, on l'affiche -->
 				{#if uploaderName}
