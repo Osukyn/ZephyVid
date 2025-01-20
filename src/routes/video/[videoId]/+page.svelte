@@ -8,6 +8,7 @@
 	import { formatNumber } from '$lib/utils/Number';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import { flip } from 'svelte/animate';
+	import { formatProfileImage } from '$lib/utils/Avatar';
 
 	let { data } = $props();
 
@@ -43,9 +44,15 @@
 		window.addEventListener('resize', () => {
 			const scrollPosition = window.scrollY;
 			const textarea = document.getElementById('new_comment');
-			if (!textarea) return;
-			textarea.style.height = 'auto';
-			textarea.style.height = textarea.scrollHeight + 'px';
+			if (textarea) {
+				textarea.style.height = 'auto';
+				textarea.style.height = textarea.scrollHeight + 'px';
+			}
+			const descElement = document.getElementById('desc');
+			if (descElement && !collapsed) {
+				descElement.style.height = 'auto';
+				descElement.style.height = descElement.scrollHeight + 'px';
+			}
 			window.scrollTo(0, scrollPosition);
 		});
 
@@ -78,7 +85,9 @@
 		setTimeout(() => {
 			if (target) {
 				descElement.style.height = '6.75rem';
+				setTimeout(() => descElement.style.maxHeight = '6.75rem', 350);
 			} else {
+				descElement.style.maxHeight = '100%';
 				descElement.style.height = descElement.scrollHeight + 'px';
 			}
 		});
@@ -128,10 +137,10 @@
 
 	function handleSortClick(sortMode: string) {
 		sort = sortMode;
-		const dialog = document.getElementById('sort-dropdown');
-		if (dialog) {
-			dialog.removeAttribute('tabIndex');
-			dialog.setAttribute('tabIndex', '0');
+		const dropdown = document.getElementById('sort-dropdown');
+		if (dropdown) {
+			dropdown.removeAttribute('tabIndex');
+			dropdown.setAttribute('tabIndex', '0');
 		}
 	}
 </script>
@@ -185,8 +194,10 @@
 				<div id="desc-container" class="card bg-base-200 { collapsed ? 'cursor-pointer' : '' }">
 					<div id="desc" class="card-body !p-4 overflow-hidden">
 						<h2 class="text-sm font-bold">{viewCount} vues {displayDate}</h2>
-						<p class="text-sm text-gray-500" contenteditable="false"
-							 bind:innerText={description}></p>
+						<p
+							class="text-sm {data.videoData.description && data.videoData.description.length > 0 ? '' : 'text-gray-500'}"
+							contenteditable="false"
+							bind:innerText={description}></p>
 						{#if !collapsed}
 							<div class="card-actions justify-start">
 								<button class="btn btn-sm" onclick={() => collapse(true)}>Moins</button>
@@ -219,14 +230,17 @@
 							</svg>
 							Trier par
 						</div>
-						<ul id="sort-dropdown" tabindex="0" class="dropdown-content menu bg-base-300 rounded-box z-[1] w-40 p-2 shadow ">
+						<ul id="sort-dropdown" tabindex="0"
+								class="dropdown-content menu bg-base-300 rounded-box z-[1] w-40 p-2 shadow ">
 							<li>
-								<a class="btn {sort === 'popular' ? 'btn-primary' : 'btn-ghost'} btn-sm !justify-start" onclick={() => handleSortClick('popular')}>
+								<a class="btn {sort === 'popular' ? 'btn-primary' : 'btn-ghost'} btn-sm !justify-start"
+									 onclick={() => handleSortClick('popular')}>
 									Popularité
 								</a>
 							</li>
 							<li>
-								<a class="btn {sort === 'recent' ? 'btn-primary' : 'btn-ghost'} btn-sm !justify-start" onclick={() => handleSortClick('recent')}>
+								<a class="btn {sort === 'recent' ? 'btn-primary' : 'btn-ghost'} btn-sm !justify-start"
+									 onclick={() => handleSortClick('recent')}>
 									Les plus récents
 								</a>
 							</li>
@@ -237,7 +251,7 @@
 					<form class="mb-4" action="?/comment" method="POST" use:enhance onreset={onreset}>
 						<div class="flex flex-col">
 							<div class="flex items-start gap-4">
-								<Avatar avatarUrl={data.user.profileImage} fallbackName={data.user.username} size="10" />
+								<Avatar avatarUrl={formatProfileImage(data.user.profileImage)} fallbackName={data.user.username} size="10" />
 								<input name="parent" type="text" class="hidden">
 								<textarea name="comment"
 													id="new_comment"
@@ -259,7 +273,7 @@
 						<div class="flex flex-col gap-4 w-full">
 							{#each displayMainComments as comment (comment.id)}
 								<div id={comment.id} transition:fade={{duration: 100}} animate:flip={{duration: 100}}>
-									<Comment {comment} user={data.user} />
+									<Comment {comment} videoOwner={data.ownerData} user={data.user} />
 								</div>
 							{/each}
 						</div>
@@ -273,6 +287,7 @@
 <style lang="css">
     #desc {
         height: 6.75rem;
+        max-height: 6.75rem;
         transition: height 0.3s ease;
     }
 </style>
