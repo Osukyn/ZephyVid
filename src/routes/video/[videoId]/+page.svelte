@@ -23,7 +23,14 @@
 		dislikes: ''
 	});
 	let sort = $state('recent');
-	let sortedComments = $derived(sortComments(sort, data.comments));
+	let comments = $state(data.comments);
+	let sortedComments = $derived.by(() => {
+		for (const c of comments) {
+			c.likes;
+			c.dislikes;
+		}
+		return sortComments(sort, comments);
+	});
 	let displayMainComments = $derived(sortedComments.filter((comment) => comment.parentCommentId === null));
 
 	onMount(() => {
@@ -118,8 +125,8 @@
 
 	let description = $state(data.videoData.description === '' ? 'Aucune description n\'a été ajoutée à cette vidéo.' : data.videoData.description);
 
-	function sortComments(sortMode: string, comments: Array<any>) {
-		let sorted = [...comments];
+	function sortComments(sortMode: string, array: Array<any>) {
+		let sorted = [...array];
 		if (sortMode === 'popular') {
 			sorted.sort((a, b) => {
 				const scoreA = a.likes - a.dislikes;
@@ -127,10 +134,10 @@
 				if (scoreB !== scoreA) {
 					return scoreB - scoreA;
 				}
-				return b.createdAt.getTime() - a.createdAt.getTime();
+				return b.createdAt - a.createdAt;
 			});
 		} else if (sortMode === 'recent') {
-			sorted.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+			sorted.sort((a, b) => b.createdAt - a.createdAt);
 		}
 		return sorted;
 	}
@@ -217,7 +224,7 @@
 			<div>
 				<div class="flex items-center gap-4">
 					<h2 class="text-xl font-bold">Commentaires <span
-						class="text-stone-400"><strong>·</strong> {data.comments.length}</span>
+						class="text-stone-400"><strong>·</strong> {comments.length}</span>
 					</h2>
 					<div class="dropdown">
 						<div tabindex="0" role="button" class="btn btn-ghost">
@@ -267,13 +274,13 @@
 							</div>
 						</div>
 					</form>
-					{#if data.comments.length === 0}
+					{#if comments.length === 0}
 						<p class="text-sm text-gray-500 text-center">Aucun commentaire pour le moment</p>
 					{:else}
 						<div class="flex flex-col gap-4 w-full">
-							{#each displayMainComments as comment (comment.id)}
+							{#each displayMainComments as comment, i (comment.id)}
 								<div id={comment.id} transition:fade={{duration: 100}} animate:flip={{duration: 100}}>
-									<Comment {comment} videoOwner={data.ownerData} user={data.user} />
+									<Comment bind:comment={displayMainComments[i]} videoOwner={data.ownerData} user={data.user} />
 								</div>
 							{/each}
 						</div>
