@@ -31,7 +31,13 @@
 		}
 		return sortComments(sort, comments);
 	});
-	let displayMainComments = $derived(sortedComments.filter((comment) => comment.parentCommentId === null));
+	let commentCount = $derived.by(() => {
+		let count = comments.length;
+		for (const c of comments) {
+			count += c.responses.length;
+		}
+		return count;
+	});
 
 	onMount(() => {
 		$effect(() => {
@@ -46,6 +52,7 @@
 				likes: formatNumber(likeData.likes),
 				dislikes: formatNumber(likeData.dislikes)
 			};
+			comments = data.comments;
 		});
 
 		window.addEventListener('resize', () => {
@@ -224,7 +231,7 @@
 			<div>
 				<div class="flex items-center gap-4">
 					<h2 class="text-xl font-bold">Commentaires <span
-						class="text-stone-400"><strong>·</strong> {comments.length}</span>
+						class="text-stone-400"><strong>·</strong> {commentCount}</span>
 					</h2>
 					<div class="dropdown">
 						<div tabindex="0" role="button" class="btn btn-ghost">
@@ -278,9 +285,9 @@
 						<p class="text-sm text-gray-500 text-center">Aucun commentaire pour le moment</p>
 					{:else}
 						<div class="flex flex-col gap-4 w-full">
-							{#each displayMainComments as comment, i (comment.id)}
+							{#each sortedComments as comment, i (comment.id)}
 								<div id={comment.id} transition:fade={{duration: 100}} animate:flip={{duration: 100}}>
-									<Comment bind:comment={displayMainComments[i]} videoOwner={data.ownerData} user={data.user} />
+									<Comment bind:comment={sortedComments[i]} videoOwner={data.ownerData} user={data.user} />
 								</div>
 							{/each}
 						</div>

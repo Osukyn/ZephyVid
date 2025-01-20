@@ -92,50 +92,50 @@ export const load = async (event) => {
 		.leftJoin(table.commentVotes, eq(table.comments.id, table.commentVotes.commentId))
 		.innerJoin(table.user, eq(table.user.id, table.comments.userId));*/
 
-	const commentsWithVotes = await db
+	const allComments = await db
 		.select({
 			id: table.comments.id, // ID du commentaire
 			content: table.comments.content, // Contenu
 			createdAt: table.comments.createdAt,
 			updatedAt: table.comments.updatedAt,
-			parentCommentId: table.comments.parentCommentId,
 			userId: table.user.id, // ID de l'utilisateur qui a posté le commentaire
 			username: table.user.username, // Son pseudo
+			parentCommentId: table.comments.parentCommentId, // ID du commentaire parent
 			profileImage: table.user.profileImage,
 			likes: sql<number>`SUM(
 		    CASE WHEN
-    ${table.commentVotes.value}
-    =
-    1
-    THEN
-    1
-    ELSE
-    0
-    END
-    )`.as('likes'),
+      ${table.commentVotes.value}
+      =
+      1
+      THEN
+      1
+      ELSE
+      0
+      END
+      )`.as('likes'),
 			dislikes: sql<number>`SUM(
 		    CASE WHEN
-    ${table.commentVotes.value}
-    =
-    -
-    1
-    THEN
-    1
-    ELSE
-    0
-    END
-    )`.as('dislikes'),
+      ${table.commentVotes.value}
+      =
+      -
+      1
+      THEN
+      1
+      ELSE
+      0
+      END
+      )`.as('dislikes'),
 			userVote: sql<number>`MAX(
 			CASE WHEN
-    ${table.commentVotes.userId}
-    =
-    ${event.locals.user.id}
-    THEN
-    ${table.commentVotes.value}
-    ELSE
-    0
-    END
-    )`.as('userVote')
+      ${table.commentVotes.userId}
+      =
+      ${event.locals.user.id}
+      THEN
+      ${table.commentVotes.value}
+      ELSE
+      0
+      END
+      )`.as('userVote'),
 		})
 		.from(table.comments)
 		// Joindre l'utilisateur qui a posté le commentaire
@@ -147,12 +147,32 @@ export const load = async (event) => {
 		.groupBy(table.comments.id, table.user.id)
 		.orderBy(table.comments.createdAt);
 
+	const mapChildren = new Map<string, Array<typeof allComments[number]>>();
+
+	for (const c of allComments) {
+		if (c.parentCommentId) {
+			// On est un commentaire 'enfant'
+			const arr = mapChildren.get(c.parentCommentId) || [];
+			arr.push(c);
+			mapChildren.set(c.parentCommentId, arr);
+		}
+	}
+
+	const parents = allComments
+		.filter((c) => c.parentCommentId === null)
+		.map((parent) => {
+			return {
+				...parent,
+				responses: mapChildren.get(parent.id) ?? []
+			};
+		});
+
 	return {
 		user: event.locals.user,
 		videoId: event.params.videoId,
 		videoData: videoData[0],
 		ownerData: ownerData[0],
-		comments: commentsWithVotes,
+		comments: parents,
 		likeData
 	};
 };
@@ -242,11 +262,16 @@ export const actions = {
 			return fail(404, { message: 'Commentaire introuvable' });
 		}
 
-		const updatedComment = await db.update(comments).set({
-			content: commentContent as string,
-			updatedAt: sql`(unixepoch())`
-		}).where(eq(comments.id, commentId as string));
+		const updatedComment = await db
+			.update(comments)
+			.set({
+				content: commentContent as string,
+				updatedAt: sql`(unixepoch())`
+			})
+			.where(eq(comments.id, commentId as string));
 
-		return updatedComment ? JSON.stringify({success: true}) : fail(500, { message: 'Erreur de mise à jour' });;
+		return updatedComment
+			? JSON.stringify({ success: true })
+			: fail(500, { message: 'Erreur de mise à jour' });
 	}
 };
