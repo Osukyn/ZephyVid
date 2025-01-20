@@ -2,7 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { db } from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import { and, eq, sql } from 'drizzle-orm';
-import type { NewComment } from '$lib/server/db/schema';
+import { comments, type NewComment } from '$lib/server/db/schema';
 
 export const load = async (event) => {
 	if (!event.locals.user) {
@@ -34,9 +34,18 @@ export const load = async (event) => {
 	const userLikeData = await db
 		.select()
 		.from(table.videoVotes)
-		.where(and(eq(table.videoVotes.videoId, event.params.videoId), eq(table.videoVotes.userId, event.locals.user.id)));
+		.where(
+			and(
+				eq(table.videoVotes.videoId, event.params.videoId),
+				eq(table.videoVotes.userId, event.locals.user.id)
+			)
+		);
 
-	const likeData = { likes, dislikes, userLike: userLikeData.length > 0 ? userLikeData[0].value : 0 };
+	const likeData = {
+		likes,
+		dislikes,
+		userLike: userLikeData.length > 0 ? userLikeData[0].value : 0
+	};
 
 	const videoData = await db
 		.select()
@@ -83,34 +92,51 @@ export const load = async (event) => {
 		.leftJoin(table.commentVotes, eq(table.comments.id, table.commentVotes.commentId))
 		.innerJoin(table.user, eq(table.user.id, table.comments.userId));*/
 
-	const commentsWithVotes = await db.select({
-		id: table.comments.id,           // ID du commentaire
-		content: table.comments.content, // Contenu
-		createdAt: table.comments.createdAt,
-		updatedAt: table.comments.updatedAt,
-		parentCommentId: table.comments.parentCommentId,
-		userId: table.user.id,                  // ID de l'utilisateur qui a posté le commentaire
-		username: table.user.username,          // Son pseudo
-		profileImage: table.user.profileImage,
-		likes: sql<number>`SUM(
-		    CASE WHEN ${table.commentVotes.value} = 1 
-		         THEN 1 
-		         ELSE 0 
-		    END
-		)`.as('likes'),
-		dislikes: sql<number>`SUM(
-		    CASE WHEN ${table.commentVotes.value} = -1 
-		         THEN 1 
-		         ELSE 0 
-		    END
-		)`.as('dislikes'),
-		userVote: sql<number>`MAX(
-			CASE WHEN ${table.commentVotes.userId} = ${event.locals.user.id} 
-			     THEN ${table.commentVotes.value} 
-			     ELSE 0 
-			END
-		)`.as('userVote')
-	})
+	const commentsWithVotes = await db
+		.select({
+			id: table.comments.id, // ID du commentaire
+			content: table.comments.content, // Contenu
+			createdAt: table.comments.createdAt,
+			updatedAt: table.comments.updatedAt,
+			parentCommentId: table.comments.parentCommentId,
+			userId: table.user.id, // ID de l'utilisateur qui a posté le commentaire
+			username: table.user.username, // Son pseudo
+			profileImage: table.user.profileImage,
+			likes: sql<number>`SUM(
+		    CASE WHEN
+    ${table.commentVotes.value}
+    =
+    1
+    THEN
+    1
+    ELSE
+    0
+    END
+    )`.as('likes'),
+			dislikes: sql<number>`SUM(
+		    CASE WHEN
+    ${table.commentVotes.value}
+    =
+    -
+    1
+    THEN
+    1
+    ELSE
+    0
+    END
+    )`.as('dislikes'),
+			userVote: sql<number>`MAX(
+			CASE WHEN
+    ${table.commentVotes.userId}
+    =
+    ${event.locals.user.id}
+    THEN
+    ${table.commentVotes.value}
+    ELSE
+    0
+    END
+    )`.as('userVote')
+		})
 		.from(table.comments)
 		// Joindre l'utilisateur qui a posté le commentaire
 		.innerJoin(table.user, eq(table.user.id, table.comments.userId))
@@ -193,5 +219,34 @@ export const actions = {
 		await db.delete(table.comments).where(eq(table.comments.id, commentId as string));
 
 		return JSON.stringify({ success: true });
+	},
+	editComment: async (event) => {
+		const user = event.locals.user;
+		if (!user) {
+			return redirect(302, '/login');
+		}
+		const formData = await event.request.formData();
+		const commentId = formData.get('commentId');
+		const commentContent = formData.get('edit-comment-content');
+
+		if (!commentId || !commentContent) {
+			return fail(400, { message: 'Paramètres manquants' });
+		}
+
+		const comment = await db
+			.select()
+			.from(table.comments)
+			.where(eq(table.comments.id, commentId as string));
+
+		if (comment.length === 0) {
+			return fail(404, { message: 'Commentaire introuvable' });
+		}
+
+		const updatedComment = await db.update(comments).set({
+			content: commentContent as string,
+			updatedAt: sql`(unixepoch())`
+		}).where(eq(comments.id, commentId as string));
+
+		return updatedComment ? JSON.stringify({success: true}) : fail(500, { message: 'Erreur de mise à jour' });;
 	}
 };
