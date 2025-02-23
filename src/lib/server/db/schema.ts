@@ -50,6 +50,8 @@ export const video = sqliteTable('video', {
 
 	// Visibilité, ex: private, unlisted, friends, etc.
 	visibility: text('visibility').notNull().default('private'),
+	// Nouveau champ pour autoriser le téléchargement de la vidéo
+	allowDownloads: integer('allow_downloads', { mode: 'boolean' }).notNull().default(false),
 
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
@@ -129,7 +131,6 @@ export const invitations = sqliteTable('invitations', {
 		.notNull()
 		.references(() => user.id, {
 			onDelete: 'cascade',
-			// ou 'set null' si tu préfères garder l’invitation même si le user est supprimé
 		}),
 
 	maxUses: integer('max_uses').notNull().default(1),
@@ -330,9 +331,40 @@ export const videoVotesRelations = relations(videoVotes, ({ one }) => ({
 	}),
 }));
 
+/* ------------------------------------------------------------------
+   9) Nouvelle table : video_watch_sessions
+   -> Enregistre pour chaque session de visionnage :
+      - la vidéo visionnée,
+      - l'utilisateur (si applicable),
+      - et la durée de visionnage (en secondes)
+ ------------------------------------------------------------------ */
+export const videoWatchSessions = sqliteTable('video_watch_sessions', {
+	id: text('id').primaryKey(),
+	videoId: text('video_id')
+		.notNull()
+		.references(() => video.id, { onDelete: 'cascade' }),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
+	watchDuration: integer('watch_duration').notNull().default(0),
+	createdAt: integer('created_at', { mode: 'timestamp' })
+		.notNull()
+		.default(sql`(unixepoch())`),
+});
+
+export const videoWatchSessionsRelations = relations(videoWatchSessions, ({ one }) => ({
+	video: one(video, {
+		fields: [videoWatchSessions.videoId],
+		references: [video.id],
+	}),
+	user: one(user, {
+		fields: [videoWatchSessions.userId],
+		references: [user.id],
+	}),
+}));
 
 /* ------------------------------------------------------------------
-   6) Types TypeScript
+   10) Types TypeScript
  ------------------------------------------------------------------ */
 export type User = typeof user.$inferSelect;
 export type NewUser = typeof user.$inferInsert;
@@ -360,3 +392,6 @@ export type NewCommentVote = typeof commentVotes.$inferInsert;
 
 export type VideoVote = typeof videoVotes.$inferSelect;
 export type NewVideoVote = typeof videoVotes.$inferInsert;
+
+export type VideoWatchSession = typeof videoWatchSessions.$inferSelect;
+export type NewVideoWatchSession = typeof videoWatchSessions.$inferInsert;
