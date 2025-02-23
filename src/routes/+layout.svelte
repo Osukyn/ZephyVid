@@ -58,7 +58,7 @@
 	</header>
 	{/if}
 	<main
-		class="flex flex-col px-12 py-4 { page.url.pathname.split('/').length === 3 && page.url.pathname.split('/').at(1) === 'video'  ?  '!p-0' : '' } h-[calc(100dvh-4.2rem)]">
+		class="flex flex-col h-[calc(100dvh-4.2rem)]">
 		<slot />
 	</main>
 </div>
