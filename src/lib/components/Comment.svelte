@@ -207,14 +207,14 @@
 		{#if !comment.parentCommentId && (comment.responses.length > 0 || isResponseEditing)}
 			{#if responsesCollapsed}
 				<div class="flex items-center gap-2 mt-2">
-					<button class="btn btn-sm btn-ghost" onclick={() => responsesCollapsed = false}>Voir les réponses</button>
+					<button class="btn btn-sm btn-primary" onclick={() => responsesCollapsed = false}>Afficher les réponses</button>
 					<p class="text-xs text-base-content opacity-70">{comment.responses.length}
 						réponse{comment.responses.length > 1 ? 's' : ''}</p>
 				</div>
 			{:else}
 				{#if comment.responses.length > 0}
 					<div class="flex items-center gap-2 my-2">
-						<button class="btn btn-sm btn-ghost" onclick={() => responsesCollapsed = true}>Masquer les réponses</button>
+						<button class="btn btn-sm btn-primary" onclick={() => responsesCollapsed = true}>Masquer les réponses</button>
 						<p class="text-xs text-base-content opacity-70">{comment.responses.length}
 							réponse{comment.responses.length > 1 ? 's' : ''}</p>
 					</div>
