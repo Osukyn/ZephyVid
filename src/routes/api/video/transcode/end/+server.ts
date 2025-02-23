@@ -18,12 +18,18 @@ export const POST = async (event) => {
 		await redis.del(`progress:${videoId}`);
 		await redis.quit();
 
+		const currentVideoResult = await db.select().from(video).where(eq(video.id, videoId));
+		if (currentVideoResult.length === 0) {
+			return new Response(null, { status: 404 });
+		}
+		const currentVideo = currentVideoResult[0];
+
 		await db
 			.update(video)
 			.set({
 				status,
-				updatedAt: sql`(unixepoch()
-                             )`
+				thumbnail: currentVideo.thumbnail || `data/videos/${videoId}/transcoded/full_thumbnail_001.jpg`,
+				updatedAt: sql`(unixepoch())`
 			})
 			.where(eq(video.id, videoId));
 
