@@ -5,19 +5,45 @@
 	import 'vidstack/icons';
 	import Hls from 'hls.js';
 
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import VideoLayout from '$lib/components/player/layouts/VideoLayout.svelte';
 	import CustomAbrController from '$lib/utils/CustomAbrController';
 
-	let { title = '', src = '', status = '', poster = '' } = $props();
+	let { title = '', src = '', status = '', poster = '', id = '', autoplay = true } = $props();
 	let thumbnails = $state('');
 	let playerReady = $state(false);
+	let hasCountedView = $state(false);
+	// Variables pour tracker le temps de visionnage
+	let lastTime = $state(0);
+	let accumulatedWatchTime = $state(0);
+	const idConst = id;
+
+	// Fonction pour envoyer le temps de visionnage via sendBeacon
+	function sendWatchTime() {
+		if (accumulatedWatchTime > 0) {
+			const payload = JSON.stringify({
+				videoId: idConst,
+				watchDuration: accumulatedWatchTime
+			});
+			// Utilisation de sendBeacon qui retourne toujours true (mais ne garantit pas le succès)
+			navigator.sendBeacon('/api/video/watch-session', payload);
+			console.log('Beacon envoyé');
+		}
+	}
 
 	onMount(() => {
 		configureProvider();
 		if (status === 'ready') {
 			thumbnails = `http://localhost/${src}/transcoded/thumbnails.vtt`;
 		}
+		// On ajoute un écouteur pour l'événement "pagehide" qui est déclenché lors du déchargement de la page
+		window.addEventListener('pagehide', sendWatchTime);
+	});
+
+	onDestroy(() => {
+		if (typeof window !== 'undefined')
+		window.removeEventListener('pagehide', sendWatchTime);
+		sendWatchTime();
 	});
 
 	function configureProvider() {
@@ -53,12 +79,43 @@
 		const provider = document.getElementById('provider');
 		if (provider) if (provider.firstElementChild) provider.firstElementChild.style.height = '100%';
 	}
+
+	async function onTimeUpdate(event: CustomEvent) {
+		// Extrait le temps courant et la durée totale de la vidéo
+		const { currentTime } = event.detail;
+		const duration = event.target.duration;
+
+		// Mise à jour de l'accumulation du temps de visionnage
+		if (lastTime !== undefined) {
+			const diff = currentTime - lastTime;
+			// On s'assure que diff est positif et raisonnable (pour éviter des sauts anormaux)
+			if (diff > 0 && diff < 5) {
+				accumulatedWatchTime += diff;
+			}
+		}
+		lastTime = currentTime;
+
+		// Utilisation de l'accumulatedWatchTime pour déterminer si 30% de la vidéo a été visionnée
+		if (!hasCountedView && duration > 0 && accumulatedWatchTime >= duration * 0.3) {
+			hasCountedView = true;
+			try {
+				await fetch('/api/video/view', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ id })
+				});
+				console.log('Vue enregistrée');
+			} catch (err) {
+				console.error('Erreur enregistrement vue', err);
+			}
+		}
+	}
 </script>
 
 <media-player load="eager" id="player" playsInline viewType="video" streamType="on-demand" title={title}
 							src={status === 'ready' ? `http://localhost/${src}/transcoded/master.m3u8` : `http://localhost/${src}/original.mp4`}
-							class="md:h-full md:max-h-[80dvh]" keyTarget="document" autoplay autoPlay oncan-load={() => playerReady = true}
-							oncan-play={onPlayerReady}>
+							class="md:h-full md:max-h-[80dvh]" keyTarget="document" {autoplay} oncan-load={() => playerReady = true}
+							oncan-play={onPlayerReady} ontime-update={onTimeUpdate}>
 	<media-provider id="provider" class="bg-black">
 		<media-poster
 			id="poster"
