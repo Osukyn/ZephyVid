@@ -2,6 +2,7 @@
 
 	import { goto } from '$app/navigation';
 	import AutocompleteMultiUser from '$lib/components/AutocompleteMultiUser.svelte';
+	import type { User } from '$lib/server/db/schema';
 
 	let title = $state('');
 	let description = $state('');
@@ -141,7 +142,7 @@
 					type="file"
 					name="videoFile"
 					id="videoFile"
-					accept="video/mp4"
+					accept="video/*"
 					class="file-input w-full mb-2"
 					required
 					onchange={handleFileChange}

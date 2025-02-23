@@ -11,12 +11,11 @@ import { Queue } from 'bullmq';
 const redis = new IORedis();
 const transcodeQueue = new Queue('transcode', { connection: redis });
 
-export const POST = async (event: never) => {
+export const POST = async (event) => {
 	// 1) Vérifier l’auth
-	if (!event.locals.user) {
-		// Si pas logué, on peut faire un fail(401) ou un redirect
-		return fail(401, { message: 'Vous devez être connecté pour uploader.' });
-	}
+
+	// Si pas logué, on peut faire un fail(401) ou un redirect
+	if (!event.locals.user) throw fail(401, { message: 'Vous devez être connecté pour uploader.' });
 
 	try {
 		// 2) Récup FormData
@@ -33,14 +32,14 @@ export const POST = async (event: never) => {
 
 		// 3) Vérifier champs
 		if (!title || !file) {
-			return fail(400, { message: 'Titre ou fichier manquant' });
+			throw fail(400, { message: 'Titre ou fichier manquant' });
 		}
 
 		// 4) Vérifier type MIME
-		const allowedTypes = ['video/mp4'];
+		/*const allowedTypes = ['video/*'];
 		if (!allowedTypes.includes(file.type)) {
-			return fail(400, { message: 'Format de fichier non supporté' });
-		}
+			throw fail(400, { message: 'Format de fichier non supporté' });
+		}*/
 
 		const videoId = randomUUID();
 
@@ -49,7 +48,7 @@ export const POST = async (event: never) => {
 		await fs.mkdir(uploadDir, { recursive: true });
 
 		const originalFileName = file.name; // ex: "myvideo.mp4"
-		const extension = path.extname(originalFileName) || '.mkv';
+		const extension = path.extname(originalFileName) || '';
 		const finalFilePath = path.join(uploadDir, `original${extension}`);
 
 		// 8) Convertir le File en Buffer et l'écrire sur disque
@@ -63,17 +62,16 @@ export const POST = async (event: never) => {
 			ownerId: event.locals.user.id,
 			title,
 			description: typeof description === 'string' ? description : null,
-			sourceFilePath: finalFilePath,  // le chemin stocké en BDD
+			sourceFilePath: finalFilePath, // le chemin stocké en BDD
 			visibility,
+			allowDownloads: false,
 			status: 'pending' // ou "uploaded"
 			// createdAt / updatedAt sont gérés par défautSql('CURRENT_TIMESTAMP') si tu l'as configuré
 		});
 
 		// optionnel: insert en DB les utilisateurs autorisés
 		if (allowedUsers.length > 0) {
-			await db.insert(videosToUsers).values(
-				allowedUsers.map(userId => ({ videoId, userId }))
-			);
+			await db.insert(videosToUsers).values(allowedUsers.map((userId) => ({ videoId, userId })));
 		}
 
 		// 6) Ajouter une tâche à la queue de transcodage
@@ -88,20 +86,25 @@ export const POST = async (event: never) => {
 				outputDir
 			});
 
-			return new Response(JSON.stringify({
-				success: true,
-				message: 'Fichier uploadé',
-				finalFilePath
-			}), {
-				status: 200,
-				headers: { 'Content-Type': 'application/json' }
-			});
+			return new Response(
+				JSON.stringify({
+					success: true,
+					message: 'Fichier uploadé',
+					finalFilePath
+				}),
+				{
+					status: 200,
+					headers: { 'Content-Type': 'application/json' }
+				}
+			);
 		} catch (err) {
 			console.error('Erreur lors de l’ajout à la queue', err);
-			return new Response(JSON.stringify({ error: 'Erreur lors de l’ajout à la queue' }), { status: 500 });
+			return new Response(JSON.stringify({ error: 'Erreur lors de l’ajout à la queue' }), {
+				status: 500
+			});
 		}
 	} catch (err) {
 		console.error(err);
-		return fail(500, { message: 'Erreur serveur' });
+		throw fail(500, { message: 'Erreur serveur' });
 	}
 };
