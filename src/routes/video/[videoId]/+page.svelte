@@ -9,6 +9,7 @@
 	import Avatar from '$lib/components/Avatar.svelte';
 	import { flip } from 'svelte/animate';
 	import { formatProfileImage } from '$lib/utils/Avatar';
+	import { Download, Pen } from 'lucide-svelte';
 
 	let { data } = $props();
 
@@ -161,7 +162,8 @@
 
 <div class="overflow-auto h-full pb-4">
 	<Player src={source} status={data.videoData.status} title={data.videoData.title}
-					poster="http://localhost/{data.videoData.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg" />
+					poster="http://localhost/{data.videoData.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg"
+					id={data.videoId} />
 
 	<div class="flex justify-center">
 		<div class="flex flex-col gap-4 mt-2 px-4 md:px-12 w-full max-w-screen-lg">
@@ -203,6 +205,18 @@
 								{/if}
 							</button>
 						</div>
+						{#if data.user.id === data.ownerData.id}
+							<a class="btn rounded-full" href="/video/{data.videoId}/edit" aria-label="Edit button">
+								<Pen />
+								Editer
+							</a>
+						{/if}
+						{#if data.videoData.allowDownloads}
+							<a class="btn rounded-full" href="http://localhost/{data.videoData.sourceFilePath}" target="_blank" aria-label="Download button">
+								<Download />
+								Télécharger
+							</a>
+						{/if}
 					</div>
 				</div>
 				<div id="desc-container" class="card bg-base-200 { collapsed ? 'cursor-pointer' : '' }">
@@ -265,7 +279,8 @@
 					<form class="mb-4" action="?/comment" method="POST" use:enhance onreset={onreset}>
 						<div class="flex flex-col">
 							<div class="flex items-start gap-4">
-								<Avatar avatarUrl={formatProfileImage(data.user.profileImage)} fallbackName={data.user.username} size="10" />
+								<Avatar avatarUrl={formatProfileImage(data.user.profileImage)} fallbackName={data.user.username}
+												size="10" />
 								<input name="parent" type="text" class="hidden">
 								<textarea name="comment"
 													id="new_comment"
