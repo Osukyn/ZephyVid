@@ -151,7 +151,7 @@
 				{/if}
 
 				{#if video.thumbnail}
-						<img src={video.thumbnail} alt="Thumbnail" class="object-cover aspect-video w-full rounded-xl" />
+						<img src="http://localhost/{video.thumbnail}" alt="Thumbnail" class="object-cover aspect-video w-full rounded-xl" />
 				{:else}
 					{#if progress.progress >= 5 }
 						<img
