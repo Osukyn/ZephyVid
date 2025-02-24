@@ -33,7 +33,7 @@
 
 		inter = setInterval(async () => {
 			await getVideoProgress();
-		}, 1000);
+		}, 5000);
 
 		// On force la réactivité en recréant l'objet
 		checkedMap = { ...checkedMap };
@@ -207,69 +207,70 @@
 		}
 	}
 </script>
-<h1 class="text-2xl mb-6">Mes vidéos <span class="text-stone-400"><strong>·</strong> {data.videos.length}</span></h1>
+<div class="px-16 py-4 overflow-auto">
+	<h1 class="text-2xl mb-6">Mes vidéos <span class="text-stone-400"><strong>·</strong> {data.videos.length}</span></h1>
 
-{#if (videoProgressStatus)}
-	<div class="flex flex-wrap gap-4 overflow-y-auto">
-		{#each data.videos as video (video.id)}
-			<div
-				id={video.id}
-				in:fade={{ duration: 100 }}
-				animate:flip={{duration: 100}}
-				class="w-fit h-fit relative"
-			>
-				<!-- Ton composant vidéo, par ex.: -->
-				<VideoCard {video} onDelete={handleDelete} bind:checked={checkedMap[video.id]}
-									 progress={videoProgressStatus.find(progressData => progressData.id === video.id)} />
-			</div>
-		{/each}
-	</div>
-{/if}
-
-{#if isAnyChecked}
-	<div transition:fly={{y: 16, duration: 100}}
-			 class="flex justify-center items-center absolute left-4 right-4 bottom-4">
-		<div class="relative flex items-center justify-between bg-base-300 rounded-2xl p-4 min-w-64 w-96">
-			<div class="flex items-center space-x-4">
-				<input
-					type="checkbox"
-					class="checkbox checkbox-primary"
-					bind:this={masterCheckboxEl}
-					onchange={handleMasterChange}
-				/>
-				<p class="mr-2">{Object.values(checkedMap).filter((val) => val === true).length}
-					vidéo{Object.values(checkedMap).filter((val) => val === true).length > 1 ? 's' : ''}</p>
-			</div>
-
-			<button class="absolute btn btn-square btn-sm btn-ghost left-1/2 -translate-x-1/2" aria-label="Delete all button"
-							onclick={handleDeleteAllConfirmation}>
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-						 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
-						 class="lucide lucide-trash-2">
-					<path d="M3 6h18" />
-					<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-					<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-					<line x1="10" x2="10" y1="11" y2="17" />
-					<line x1="14" x2="14" y1="11" y2="17" />
-				</svg>
-			</button>
-			<button class="btn btn-primary btn-sm ml-auto" onclick={unselectAll}>Annuler</button>
+	{#if (videoProgressStatus)}
+		<div class="flex flex-wrap gap-4 overflow-y-auto">
+			{#each data.videos as video (video.id)}
+				<div
+					id={video.id}
+					in:fade={{ duration: 100 }}
+					animate:flip={{duration: 100}}
+					class="w-fit h-fit relative"
+				>
+					<VideoCard {video} onDelete={handleDelete} bind:checked={checkedMap[video.id]}
+										 progress={videoProgressStatus.find(progressData => progressData.id === video.id)} />
+				</div>
+			{/each}
 		</div>
-		{#if deleteAllConfirmation}
-			<div class="absolute flex justify-end w-96 z-10 h-full">
-				<div id="delete-toolbar-override" class="flex items-center bg-base-300 rounded-2xl h-full w-0">
-					<div class="flex justify-between items-center p-4 h-full w-full opacity-0">
-						<p class="mr-2 text-nowrap">Supprimer {Object.values(checkedMap).filter((val) => val === true).length}
-							vidéo{Object.values(checkedMap).filter((val) => val === true).length > 1 ? 's' : ''} ?</p>
-						<button class="btn btn-primary btn-sm" onclick={handleDeleteAllConfirmationConfirmed}>Confirmer</button>
-						<button class="btn btn-error btn-sm" onclick={handleDeleteAllConfirmationCancel}>Annuler</button>
+	{/if}
+
+	{#if isAnyChecked}
+		<div transition:fly={{y: 16, duration: 100}}
+				 class="flex justify-center items-center absolute left-4 right-4 bottom-4">
+			<div class="relative flex items-center justify-between bg-base-300 rounded-2xl p-4 min-w-64 w-96">
+				<div class="flex items-center space-x-4">
+					<input
+						type="checkbox"
+						class="checkbox checkbox-primary"
+						bind:this={masterCheckboxEl}
+						onchange={handleMasterChange}
+					/>
+					<p class="mr-2">{Object.values(checkedMap).filter((val) => val === true).length}
+						vidéo{Object.values(checkedMap).filter((val) => val === true).length > 1 ? 's' : ''}</p>
+				</div>
+
+				<button class="absolute btn btn-square btn-sm btn-ghost left-1/2 -translate-x-1/2"
+								aria-label="Delete all button"
+								onclick={handleDeleteAllConfirmation}>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+							 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
+							 class="lucide lucide-trash-2">
+						<path d="M3 6h18" />
+						<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+						<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+						<line x1="10" x2="10" y1="11" y2="17" />
+						<line x1="14" x2="14" y1="11" y2="17" />
+					</svg>
+				</button>
+				<button class="btn btn-primary btn-sm ml-auto" onclick={unselectAll}>Annuler</button>
+			</div>
+			{#if deleteAllConfirmation}
+				<div class="absolute flex justify-end w-96 z-10 h-full">
+					<div id="delete-toolbar-override" class="flex items-center bg-base-300 rounded-2xl h-full w-0">
+						<div class="flex justify-between items-center p-4 h-full w-full opacity-0">
+							<p class="mr-2 text-nowrap">Supprimer {Object.values(checkedMap).filter((val) => val === true).length}
+								vidéo{Object.values(checkedMap).filter((val) => val === true).length > 1 ? 's' : ''} ?</p>
+							<button class="btn btn-primary btn-sm" onclick={handleDeleteAllConfirmationConfirmed}>Confirmer</button>
+							<button class="btn btn-error btn-sm" onclick={handleDeleteAllConfirmationCancel}>Annuler</button>
+						</div>
 					</div>
 				</div>
-			</div>
-		{/if}
-	</div>
-{/if}
-
+			{/if}
+		</div>
+	{/if}
+</div>
 <style>
     .btn-ghost,
     .btn-ghost:focus,
