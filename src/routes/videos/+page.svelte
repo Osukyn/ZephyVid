@@ -1,13 +1,12 @@
 <script lang="ts">
 
 	import VideoCard from '$lib/components/VideoCard.svelte';
-	import { type Video } from '$lib/server/db/schema';
 	import { onDestroy, onMount } from 'svelte';
 	import { fly, fade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
 	// Données en provenance du load (ex: data.videos)
-	export let data: { videos: Video[] };
+	export let data: { videos: any[], usersVideos: any[] };
 
 	// Dictionnaire des états "checked" (clé = video.id)
 	// Par défaut, aucune vidéo cochée.
@@ -220,11 +219,30 @@
 					class="w-fit h-fit relative"
 				>
 					<VideoCard {video} onDelete={handleDelete} bind:checked={checkedMap[video.id]}
-										 progress={videoProgressStatus.find(progressData => progressData.id === video.id)} />
+										 progress={videoProgressStatus.find(progressData => progressData.id === video.id)} user={data.user} />
 				</div>
 			{/each}
 		</div>
 	{/if}
+
+	{#if data.videos.length === 0}
+		<p class="text-center text-stone-400">Aucune vidéo trouvée</p>
+	{/if}
+
+	{#each Object.values(data.usersVideos) as videos}
+		<h2 class="text-2xl mt-8 mb-6">Vidéos de <strong>{videos[0].owner.username}</strong> <span class="text-stone-400"><strong>·</strong> {videos.length}</span></h2>
+		<div class="flex flex-wrap gap-4 overflow-y-auto">
+			{#each videos as video}
+				<div
+					in:fade={{ duration: 100 }}
+					class="w-fit h-fit relative"
+				>
+					<VideoCard {video} user={data.user} />
+				</div>
+			{/each}
+		</div>
+	{/each}
+
 
 	{#if isAnyChecked}
 		<div transition:fly={{y: 16, duration: 100}}

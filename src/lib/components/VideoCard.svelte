@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Video } from '$lib/server/db/schema';
+	import type { User, Video } from '$lib/server/db/schema';
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import { formatTimeAgoIntl } from '$lib/utils/Date.js';
@@ -9,8 +9,8 @@
 	 * Props de la vidéo.
 	 */
 	export let video: any;
-	export let uploaderName: string = '';
-	export let progress: { id: string, progress: number, status: string } = null;
+	export let progress: { id: string, progress: number, status: string } | null = null;
+	export let user: User | null = null;
 	/**
 	 * Callback pour avertir le parent
 	 * lorsqu'on coche/décoche la checkbox.
@@ -109,54 +109,65 @@
 			 onmouseenter={() => hovered = true} onmouseleave={() => hovered = false}>
 		<figure>
 			<div class="aspect-video w-full relative">
-				<div class="flex justify-between h-6 items-center absolute top-4 left-4 right-4">
-					{#if hovered || checked}
-						<input id="check-{video.id}" type="checkbox" bind:checked={checked}
-									 class="checkbox checkbox-primary z-10" />
-					{/if}
-					{#if hovered && !checked}
-						<button class="btn btn-sm btn-square btn-ghost z-10 m-0" aria-label="Delete button"
-										onclick={handleDeleteConfirmation}>
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-									 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
-									 class="lucide lucide-trash-2">
-								<path d="M3 6h18" />
-								<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-								<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-								<line x1="10" x2="10" y1="11" y2="17" />
-								<line x1="14" x2="14" y1="11" y2="17" />
-							</svg>
-						</button>
-					{/if}
-				</div>
-				{#if hovered && (progress ? progress.status : 'pending') !== 'pending'}
-					<div transition:fade={{duration: 100}}
-							 class="absolute flex justify-center items-center w-full h-full bg-base-100 bg-opacity-50 rounded-xl">
-						<button class="btn btn-square btn-lg btn-ghost" aria-label="Play button" onclick={playVideo}>
-							<Play class="w-12 h-12 fill-current" />
-						</button>
+				{#if video.ownerId === user?.id }
+					<div class="flex justify-between h-6 items-center absolute top-4 left-4 right-4">
+						{#if hovered || checked}
+							<input id="check-{video.id}" type="checkbox" bind:checked={checked}
+										 class="checkbox checkbox-primary z-10" />
+						{/if}
+						{#if hovered && !checked && video.ownerId === user?.id}
+							<button class="btn btn-sm btn-square btn-ghost z-10 m-0" aria-label="Delete button"
+											onclick={handleDeleteConfirmation}>
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+										 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
+										 class="lucide lucide-trash-2">
+									<path d="M3 6h18" />
+									<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+									<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+									<line x1="10" x2="10" y1="11" y2="17" />
+									<line x1="14" x2="14" y1="11" y2="17" />
+								</svg>
+							</button>
+						{/if}
 					</div>
-				{/if}
-				{#if ((progress ? progress.status : 'pending') === 'pending')}
-					<div
-						class="absolute flex flex-col justify-center items-center w-full h-full bg-base-100 bg-opacity-85 rounded-xl">
-						<p class="text-2xl font-bold text-center">Optimisation en cours</p>
-						<p class="text-lg font-bold text-center text-secondary">{progress.progress}%</p>
-					</div>
-					<progress class=" absolute bottom-0 progress-bar progress progress-primary w-full transition-all"
-										value={progress.progress} max="100"></progress>
+					{#if hovered && (progress ? progress.status : 'pending') !== 'pending'}
+						<div transition:fade={{duration: 100}}
+								 class="absolute flex justify-center items-center w-full h-full bg-base-100 bg-opacity-50 rounded-xl">
+							<button class="btn btn-square btn-lg btn-ghost" aria-label="Play button" onclick={playVideo}>
+								<Play class="w-12 h-12 fill-current" />
+							</button>
+						</div>
+					{/if}
+					{#if ((progress ? progress.status : 'pending') === 'pending')}
+						<div
+							class="absolute flex flex-col justify-center items-center w-full h-full bg-base-100 bg-opacity-85 rounded-xl">
+							<p class="text-2xl font-bold text-center">Optimisation en cours</p>
+							<p class="text-lg font-bold text-center text-secondary">{progress?.progress}%</p>
+						</div>
+						<progress class=" absolute bottom-0 progress-bar progress progress-primary w-full transition-all"
+											value={progress?.progress || 0} max="100"></progress>
+					{/if}
+				{:else }
+					{#if hovered}
+						<div transition:fade={{duration: 100}}
+								 class="absolute flex justify-center items-center w-full h-full bg-base-100 bg-opacity-50 rounded-xl">
+							<button class="btn btn-square btn-lg btn-ghost" aria-label="Play button" onclick={playVideo}>
+								<Play class="w-12 h-12 fill-current" />
+							</button>
+						</div>
+					{/if}
 				{/if}
 
 				{#if video.thumbnail}
 					<img src="http://localhost/{video.thumbnail}" alt="Thumbnail"
 							 class="object-cover aspect-video w-full rounded-xl" />
 				{:else}
-					{#if progress.progress >= 5 }
+					{#if progress ? progress.progress || 0 >= 5 : video.status === 'ready'}
 						<img
 							src="http://localhost/{video.sourceFilePath?.split('/').slice(0, -1).join('/')}/transcoded/full_thumbnail_001.jpg"
 							alt="Thumbnail" class="object-cover aspect-video w-full rounded-xl">
 					{:else}
-						<div class="object-cover aspect-video w-full bg-gray-700"></div>
+						<div class="object-cover aspect-video w-full bg-gray-700 rounded-xl"></div>
 					{/if}
 				{/if}
 			</div>
@@ -165,8 +176,8 @@
 			<h2 class="card-title text-wrap overflow-hidden">{video.title}</h2>
 			<p class="text-sm text-gray-400">
 				<!-- Si on a un uploaderName, on l'affiche -->
-				{#if uploaderName}
-					<span>Par <span class="text-white font-bold">{uploaderName}</span>, </span>
+				{#if user && user.id !== video.ownerId}
+					<span>Par <span class="text-white font-bold">{video.owner.username}</span>, </span>
 				{/if}
 				<!-- Affichage de la date formatée -->
 				<span>{displayDate}</span>
