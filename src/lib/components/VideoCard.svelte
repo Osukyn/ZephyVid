@@ -3,11 +3,12 @@
 	import { fade } from 'svelte/transition';
 	import { goto } from '$app/navigation';
 	import { formatTimeAgoIntl } from '$lib/utils/Date.js';
+	import { Eye, MessageSquare, Play } from 'lucide-svelte';
 
 	/**
 	 * Props de la vidéo.
 	 */
-	export let video: Video;
+	export let video: any;
 	export let uploaderName: string = '';
 	export let progress: { id: string, progress: number, status: string } = null;
 	/**
@@ -132,11 +133,7 @@
 					<div transition:fade={{duration: 100}}
 							 class="absolute flex justify-center items-center w-full h-full bg-base-100 bg-opacity-50 rounded-xl">
 						<button class="btn btn-square btn-lg btn-ghost" aria-label="Play button" onclick={playVideo}>
-							<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-									 stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
-									 class="lucide lucide-play">
-								<polygon points="6 3 20 12 6 21 6 3" />
-							</svg>
+							<Play class="w-12 h-12 fill-current" />
 						</button>
 					</div>
 				{/if}
@@ -151,7 +148,8 @@
 				{/if}
 
 				{#if video.thumbnail}
-						<img src="http://localhost/{video.thumbnail}" alt="Thumbnail" class="object-cover aspect-video w-full rounded-xl" />
+					<img src="http://localhost/{video.thumbnail}" alt="Thumbnail"
+							 class="object-cover aspect-video w-full rounded-xl" />
 				{:else}
 					{#if progress.progress >= 5 }
 						<img
@@ -163,16 +161,27 @@
 				{/if}
 			</div>
 		</figure>
-		<div class="overflow-hidden p-2">
+		<div class="overflow-hidden p-2 pb-0">
 			<h2 class="card-title text-wrap overflow-hidden">{video.title}</h2>
-			<p class="text-sm text-gray-500">
+			<p class="text-sm text-gray-400">
 				<!-- Si on a un uploaderName, on l'affiche -->
 				{#if uploaderName}
-					<span>Par {uploaderName}, </span>
+					<span>Par <span class="text-white font-bold">{uploaderName}</span>, </span>
 				{/if}
 				<!-- Affichage de la date formatée -->
 				<span>{displayDate}</span>
 			</p>
+		</div>
+		<div class="flex justify-between px-2">
+			<div class="flex items-center text-gray-400 gap-1">
+				<MessageSquare class="w-4 h-4 stroke-gray-400" />
+				{video.commentCount}
+			</div>
+			<div class="flex items-center text-gray-400 gap-1">
+				{video.viewCount}
+				<Eye class="w-4 h-4 stroke-gray-400" />
+			</div>
+
 		</div>
 	</div>
 	{#if deleteConfirmation}
