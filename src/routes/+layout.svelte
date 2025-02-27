@@ -47,8 +47,8 @@
 						</li>
 						<li><a>Paramètres</a></li>
 						<li>
-							<form action="/api/logout" method="post">
-								<button type="submit">Déconnexion</button>
+							<form class="flex grow" action="/api/logout" method="post">
+								<button class="w-full text-left" type="submit">Déconnexion</button>
 							</form>
 						</li>
 					</ul>
