@@ -45,7 +45,7 @@
 								Profile
 							</a>
 						</li>
-						<li><a>Paramètres</a></li>
+						<li><a href="/settings">Paramètres</a></li>
 						<li>
 							<form class="flex grow" action="/api/logout" method="post">
 								<button class="w-full text-left" type="submit">Déconnexion</button>
