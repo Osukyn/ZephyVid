@@ -171,7 +171,7 @@
 				<h1 class="text-xl font-bold mb-2">{data.videoData.title}</h1>
 				<div class="flex items-center justify-between gap-4 mb-2">
 					<a href="/user/{data.ownerData.username}" class="flex items-center gap-2">
-						<Avatar avatarUrl={data.ownerData.profileImage} fallbackName={data.ownerData.username} size="10" />
+						<Avatar avatarUrl={data.ownerData.profileImage} fallbackName={data.ownerData.username} size="h-10 w-10" />
 						<span class="font-bold">{data.ownerData.username}</span>
 					</a>
 					<div class="flex items-center">
@@ -280,7 +280,7 @@
 						<div class="flex flex-col">
 							<div class="flex items-start gap-4">
 								<Avatar avatarUrl={formatProfileImage(data.user.profileImage)} fallbackName={data.user.username}
-												size="10" />
+												size="h-10 w-10" />
 								<input name="parent" type="text" class="hidden">
 								<textarea name="comment"
 													id="new_comment"

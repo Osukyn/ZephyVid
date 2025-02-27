@@ -34,7 +34,7 @@
 						<Avatar
 							avatarUrl={formatProfileImage(data.user.profileImage)}
 							fallbackName={data.user.username}
-							size="10"
+							size="h-10 w-10"
 							></Avatar>
 					</div>
 					<ul

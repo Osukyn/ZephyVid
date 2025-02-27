@@ -2,15 +2,17 @@
 	let {
 		avatarUrl,
 		fallbackName,
-		size = '8',
+		size = 'h-8 w-8',
 		fallbackColor = 'neutral',
 		ring = false,
+		children = () => [],
 	}: {
 		avatarUrl: string | null,
 		fallbackName: string,
 		size?: string,
 		fallbackColor?: string,
 		ring?: boolean,
+		children?: () => any,
 	} = $props();
 	let fontSizeRem = $derived(tailwindSizeToRem(size) * 0.7);
 	let ringTailwindParameters = $derived.by(() => {
@@ -18,6 +20,8 @@
 	});
 
 	function tailwindSizeToRem(twSize: string) {
+		const sizeSplit = twSize.split('-');
+		twSize = sizeSplit[sizeSplit.length - 1];
 		// En Tailwind, h-8 = 2rem, h-1 = 0.25rem, etc.
 		// On part du principe que 1 => 0.25rem
 		const numeric = parseInt(twSize, 10);
@@ -27,12 +31,13 @@
 </script>
 <div class="avatar select-none{ avatarUrl ? '' : ' placeholder' }">
 	<div
-		class="bg-{fallbackColor} text-{fallbackColor}-content h-{size} w-{size} rounded-full{ringTailwindParameters}">
+		class="bg-{fallbackColor} text-{fallbackColor}-content {size} rounded-full{ringTailwindParameters}">
 		{#if avatarUrl}
 			<img
 				src={avatarUrl}
 				alt="avatar"
 			/>
+			{@render children()}
 		{:else}
 			<span class="leading-none font-bold" style="font-size: {fontSizeRem}rem">{fallbackName[0].toUpperCase()}</span>
 		{/if}

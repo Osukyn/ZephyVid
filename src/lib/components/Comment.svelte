@@ -131,7 +131,7 @@
 </script>
 
 <div class="flex gap-4 w-full">
-	<Avatar avatarUrl={formatProfileImage(comment.profileImage)} fallbackName={comment.username} size="10"
+	<Avatar avatarUrl={formatProfileImage(comment.profileImage)} fallbackName={comment.username} size="h-10 w-10"
 					ring={videoOwner && videoOwner.id === comment.userId} />
 	<div class="flex flex-col w-full">
 		<div class="flex gap-2 mb-2">
@@ -228,7 +228,7 @@
 			<form class="mt-2" action="?/comment" method="POST" use:enhance onreset={onreset}>
 				<div class="flex flex-col">
 					<div class="flex items-start gap-4">
-						<Avatar avatarUrl={formatProfileImage(user.profileImage)} fallbackName={user.username} size="10" />
+						<Avatar avatarUrl={formatProfileImage(user.profileImage)} fallbackName={user.username} size="h-10 w-10" />
 						<input name="parent" type="text" class="hidden" bind:value={comment.id}>
 						<textarea name="comment"
 											id="new_response-{comment.id}"
