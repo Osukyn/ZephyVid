@@ -13,11 +13,71 @@
 	{#if data.user}
 	<header>
 		<div class="navbar border-b-[1px] border-stone-900 px-4 md:px-12 shadow-2xl">
+			<div class="dropdown h-full">
+				<div tabindex="0" role="button" class="btn btn-ghost lg:hidden h-full">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h8m-8 6h16" />
+					</svg>
+				</div>
+				<ul
+					tabindex="0"
+					class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+					<li>
+						<a
+							href="/videos"
+							class="text-sm font-medium transition-colors hover:text-primary"
+						>
+							Mes Vidéos
+						</a>
+					</li>
+					{#if data.user.isAdmin}
+						<li>
+							<a
+								href="/invites"
+								class="text-sm font-medium transition-colors hover:text-primary"
+							>
+								Invitations
+							</a>
+						</li>
+					{/if}
+				</ul>
+			</div>
 			<div class="flex-1">
 				<a class="btn btn-ghost text-xl !pl-0" href="/videos">
 					<img src={logo} alt="logo" class="h-10 w-12" />
 					ZephyVid
 				</a>
+				<div class="hidden lg:flex h-full">
+					<ul class="menu menu-horizontal mt-0 py-0 px-1 h-full">
+						<li>
+							<a
+								href="/videos"
+								class="btn btn-ghost h-full"
+							>
+								Mes Vidéos
+							</a>
+						</li>
+						{#if data.user.isAdmin}
+							<li>
+								<a
+									href="/invites"
+									class="btn btn-ghost h-full"
+								>
+									Invitations
+								</a>
+							</li>
+						{/if}
+					</ul>
+				</div>
 			</div>
 			<div class="flex-none gap-2">
 				<a class="btn btn-ghost btn-square" href="/videos/upload" aria-label="upload video button">

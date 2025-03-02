@@ -23,7 +23,7 @@ export const usersRelations = relations(user, ({ many }) => ({
 	// Relation 1-n : un user peut avoir fait plusieurs commentaires
 	comments: many(comments),
 	commentVotes: many(commentVotes),
-	videoVotes: many(videoVotes),
+	videoVotes: many(videoVotes)
 }));
 
 // Table session
@@ -39,7 +39,9 @@ export const session = sqliteTable('session', {
 export const video = sqliteTable('video', {
 	id: text('id').primaryKey(),
 	// L’owner d’une vidéo (relation 1-n vers users)
-	ownerId: text('owner_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+	ownerId: text('owner_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
 
 	title: text('title').notNull(),
 	description: text('description'),
@@ -66,13 +68,13 @@ export const videosRelations = relations(video, ({ one, many }) => ({
 	// Relation 1-n : le owner de la vidéo
 	owner: one(user, {
 		fields: [video.ownerId],
-		references: [user.id],
+		references: [user.id]
 	}),
 	// Relation n-n : liste des associations « vidéo partagée »
 	videosToUsers: many(videosToUsers),
 	// Relation 1-n : une vidéo peut avoir plusieurs commentaires
 	comments: many(comments),
-	videoVotes: many(videoVotes),
+	videoVotes: many(videoVotes)
 }));
 
 // -------------------------
@@ -84,24 +86,22 @@ export const videosToUsers = sqliteTable(
 		videoId: text('video_id')
 			.notNull()
 			.references(() => video.id, {
-				onDelete: 'cascade', // si la vidéo est supprimée, on supprime l’association
+				onDelete: 'cascade' // si la vidéo est supprimée, on supprime l’association
 			}),
 		userId: text('user_id')
 			.notNull()
 			.references(() => user.id, {
-				onDelete: 'cascade', // si l’utilisateur est supprimé, on supprime l’association
+				onDelete: 'cascade' // si l’utilisateur est supprimé, on supprime l’association
 			}),
-		accessLevel: integer('access_level').notNull().default(0),
+		accessLevel: integer('access_level').notNull().default(0)
 	},
 	// Clé primaire composite
 	(table) => {
 		return {
 			pk: primaryKey({
-				columns: [
-					table.videoId, table.userId
-				]
+				columns: [table.videoId, table.userId]
 			})
-		}
+		};
 	}
 );
 
@@ -109,13 +109,13 @@ export const videosToUsersRelations = relations(videosToUsers, ({ one }) => ({
 	// Relation vers la vidéo
 	video: one(video, {
 		fields: [videosToUsers.videoId],
-		references: [video.id],
+		references: [video.id]
 	}),
 	// Relation vers l’utilisateur
 	user: one(user, {
 		fields: [videosToUsers.userId],
-		references: [user.id],
-	}),
+		references: [user.id]
+	})
 }));
 
 /* ------------------------------------------------------------------
@@ -130,17 +130,16 @@ export const invitations = sqliteTable('invitations', {
 	createdByUserId: text('created_by_user_id')
 		.notNull()
 		.references(() => user.id, {
-			onDelete: 'cascade',
+			onDelete: 'cascade'
 		}),
 
 	maxUses: integer('max_uses').notNull().default(1),
-	usageCount: integer('usage_count').notNull().default(0),
 
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
 		.default(sql`(unixepoch())`),
 
-	expiresAt: integer('expires_at', { mode: 'timestamp' }),
+	expiresAt: integer('expires_at', { mode: 'timestamp' })
 });
 
 // Relations "invitations"
@@ -148,12 +147,11 @@ export const invitationsRelations = relations(invitations, ({ one, many }) => ({
 	// L'user qui a créé l’invitation
 	createdBy: one(user, {
 		fields: [invitations.createdByUserId],
-		references: [user.id],
+		references: [user.id]
 	}),
 	// Lien n-n avec "invitationsToUsers" pour enregistrer qui l'a utilisée
-	invitationsToUsers: many(invitationsToUsers),
+	invitationsToUsers: many(invitationsToUsers)
 }));
-
 
 /* ------------------------------------------------------------------
    5) Table de jonction Many-to-Many pour savoir
@@ -165,20 +163,23 @@ export const invitationsToUsers = sqliteTable(
 		invitationId: text('invitation_id')
 			.notNull()
 			.references(() => invitations.id, {
-				onDelete: 'cascade',
+				onDelete: 'cascade'
 			}),
 		usedByUserId: text('used_by_user_id')
 			.notNull()
 			.references(() => user.id, {
-				onDelete: 'cascade',
+				onDelete: 'cascade'
 			}),
+		usedAt: integer('used_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
 	},
 	(table) => {
 		return {
 			pk: primaryKey({
 				columns: [table.invitationId, table.usedByUserId]
 			})
-		}
+		};
 	}
 );
 
@@ -186,68 +187,72 @@ export const invitationsToUsers = sqliteTable(
 export const invitationsToUsersRelations = relations(invitationsToUsers, ({ one }) => ({
 	invitation: one(invitations, {
 		fields: [invitationsToUsers.invitationId],
-		references: [invitations.id],
+		references: [invitations.id]
 	}),
 	usedBy: one(user, {
 		fields: [invitationsToUsers.usedByUserId],
-		references: [user.id],
-	}),
+		references: [user.id]
+	})
 }));
 
 /* ------------------------------------------------------------------
    6) Table comments
  ------------------------------------------------------------------ */
-export const comments = sqliteTable('comments', {
-	id: text('id').primaryKey(),
+export const comments = sqliteTable(
+	'comments',
+	{
+		id: text('id').primaryKey(),
 
-	// Lien vers la vidéo commentée
-	videoId: text('video_id')
-		.notNull()
-		.references(() => video.id, { onDelete: 'cascade' }),
+		// Lien vers la vidéo commentée
+		videoId: text('video_id')
+			.notNull()
+			.references(() => video.id, { onDelete: 'cascade' }),
 
-	// L’utilisateur qui poste le commentaire
-	userId: text('user_id')
-		.notNull()
-		.references(() => user.id, { onDelete: 'cascade' }),
-	// Commentaire parent => s'il est NULL => commentaire top-level
-	// S'il est renseigné => c'est une réponse
-	parentCommentId: text('parent_comment_id'),
-	content: text('content').notNull(),
-	createdAt: integer('created_at', { mode: 'timestamp' })
-		.notNull()
-		.default(sql`(unixepoch())`),
+		// L’utilisateur qui poste le commentaire
+		userId: text('user_id')
+			.notNull()
+			.references(() => user.id, { onDelete: 'cascade' }),
+		// Commentaire parent => s'il est NULL => commentaire top-level
+		// S'il est renseigné => c'est une réponse
+		parentCommentId: text('parent_comment_id'),
+		content: text('content').notNull(),
+		createdAt: integer('created_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`),
 
-	// Timestamp de dernière modification
-	updatedAt: integer('updated_at', { mode: 'timestamp' })
-		.notNull()
-		.default(sql`(unixepoch())`),
-}, (table) => {
-	return {
-		parentReference: foreignKey({
-			columns: [table.parentCommentId],
-			foreignColumns: [table.id],
-			name: 'fk_parent_comment_id',
-		})
+		// Timestamp de dernière modification
+		updatedAt: integer('updated_at', { mode: 'timestamp' })
+			.notNull()
+			.default(sql`(unixepoch())`)
+	},
+	(table) => {
+		return {
+			parentReference: foreignKey({
+				columns: [table.parentCommentId],
+				foreignColumns: [table.id],
+				name: 'fk_parent_comment_id'
+			})
+		};
 	}
-});
+);
 
 export const commentsRelations = relations(comments, ({ one, many }) => ({
 	video: one(video, {
 		fields: [comments.videoId],
-		references: [video.id],
+		references: [video.id]
 	}),
 	user: one(user, {
 		fields: [comments.userId],
-		references: [user.id],
+		references: [user.id]
 	}),
 	// Relation vers le commentaire parent
 	parentComment: one(comments, {
 		fields: [comments.parentCommentId],
-		references: [comments.id],
+		references: [comments.id]
 	}),
 	// Relation vers d’éventuelles réponses (1-n)
 	replies: many(comments),
-	commentVotes: many(commentVotes),
+	commentVotes: many(commentVotes)
 }));
 
 /* ------------------------------------------------------------------
@@ -266,29 +271,26 @@ export const commentVotes = sqliteTable(
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
 
-		value: integer('value')
-			.notNull()
-			.default(0), // 1 = like, -1 = dislike, etc.
-
+		value: integer('value').notNull().default(0) // 1 = like, -1 = dislike, etc.
 	},
 	(table) => {
 		return {
 			pk: primaryKey({
 				columns: [table.commentId, table.userId]
-			}),
-		}
+			})
+		};
 	}
 );
 
 export const commentVotesRelations = relations(commentVotes, ({ one }) => ({
 	comment: one(comments, {
 		fields: [commentVotes.commentId],
-		references: [comments.id],
+		references: [comments.id]
 	}),
 	user: one(user, {
 		fields: [commentVotes.userId],
-		references: [user.id],
-	}),
+		references: [user.id]
+	})
 }));
 
 /* ------------------------------------------------------------------
@@ -307,28 +309,26 @@ export const videoVotes = sqliteTable(
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
 
-		value: integer('value')
-			.notNull()
-			.default(0), // 1 = like, -1 = dislike
+		value: integer('value').notNull().default(0) // 1 = like, -1 = dislike
 	},
 	(table) => {
 		return {
 			pk: primaryKey({
 				columns: [table.videoId, table.userId]
-			}),
-		}
+			})
+		};
 	}
 );
 
 export const videoVotesRelations = relations(videoVotes, ({ one }) => ({
 	video: one(video, {
 		fields: [videoVotes.videoId],
-		references: [video.id],
+		references: [video.id]
 	}),
 	user: one(user, {
 		fields: [videoVotes.userId],
-		references: [user.id],
-	}),
+		references: [user.id]
+	})
 }));
 
 /* ------------------------------------------------------------------
@@ -349,18 +349,18 @@ export const videoWatchSessions = sqliteTable('video_watch_sessions', {
 	watchDuration: integer('watch_duration').notNull().default(0),
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
-		.default(sql`(unixepoch())`),
+		.default(sql`(unixepoch())`)
 });
 
 export const videoWatchSessionsRelations = relations(videoWatchSessions, ({ one }) => ({
 	video: one(video, {
 		fields: [videoWatchSessions.videoId],
-		references: [video.id],
+		references: [video.id]
 	}),
 	user: one(user, {
 		fields: [videoWatchSessions.userId],
-		references: [user.id],
-	}),
+		references: [user.id]
+	})
 }));
 
 /* ------------------------------------------------------------------
