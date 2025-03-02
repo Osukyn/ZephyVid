@@ -1,6 +1,5 @@
 <script lang="ts">
 	import 'tailwindcss/tailwind.css';
-	import { page } from '$app/state';
 	import logo from '$lib/assets/logo.svg';
 	import Avatar from '$lib/components/Avatar.svelte';
 	import { formatProfileImage } from '$lib/utils/Avatar';
@@ -118,7 +117,7 @@
 	</header>
 	{/if}
 	<main
-		class="flex flex-col h-[calc(100dvh-4.2rem)]">
+		class="flex flex-col{ data.user ? ' h-[calc(100dvh-4.2rem)]' : ' h-dvh'}">
 		<slot />
 	</main>
 </div>
