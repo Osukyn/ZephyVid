@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add comments, description and like functionalities to video watching page">
+    <list default="true" id="aa19c107-f86c-41dd-838e-8bc39e0fcabe" name="Changes" comment="Add user info update">
+      <change afterPath="$PROJECT_DIR$/src/routes/invites/+page.server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/invites/+page.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib/components/Player.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/components/Player.svelte" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/server/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server/auth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/server/db/schema.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/server/db/schema.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/+layout.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/+layout.svelte" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/videos/+page.svelte" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/videos/+page.svelte" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -22,14 +27,23 @@
         <option value="password/reset+page" />
         <option value="JavaScript File" />
         <option value="Player" />
-        <option value="+page" />
         <option value="Comment" />
         <option value="AutocompleteMultiUser" />
+        <option value="Avatar" />
+        <option value="+page" />
+        <option value="settings" />
+        <option value="settings/+page" />
+        <option value="invites/+page" />
         <option value="TypeScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -53,44 +67,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Docker.docker-compose.yml.nginx: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.redis: Compose Deployment.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/osukyn/WebstormProjects/ZephyVid/transcoding-server",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.dev.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "/Users/osukyn/WebstormProjects/ZephyVid/node_modules/prettier",
-    "settings.editor.selected.configurable": "terminal",
-    "ts.external.directory.path": "/Users/osukyn/WebstormProjects/ZephyVid/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Docker.docker-compose.yml.nginx: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.redis: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/osukyn/WebstormProjects/ZephyVid/src/routes/video/[videoId]/edit&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/osukyn/WebstormProjects/ZephyVid/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/osukyn/WebstormProjects/ZephyVid/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite",
-      "redis"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;,
+      &quot;redis&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
-      "SQLite"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
+      &quot;SQLite&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/routes/video/[videoId]/edit" />
       <recent name="$PROJECT_DIR$/transcoding-server" />
       <recent name="$PROJECT_DIR$/src/lib/components/player" />
       <recent name="$PROJECT_DIR$/static/790cace2-bb2c-4216-8fb7-7253af8fa74f" />
       <recent name="$PROJECT_DIR$/static" />
-      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/lib/assets" />
@@ -145,15 +159,15 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.docker-compose.yml.nginx: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.redis: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.nginx: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-WS-243.22562.222" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-WS-243.25659.40" />
       </set>
     </attachedChunks>
   </component>
@@ -179,62 +193,15 @@
       <workItem from="1735458726830" duration="9003000" />
       <workItem from="1735483993407" duration="18259000" />
       <workItem from="1736286587819" duration="134374000" />
-    </task>
-    <task id="LOCAL-00001" summary="Add files to gitignore">
-      <option name="closed" value="true" />
-      <created>1734803996683</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1734803996683</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Add video and video format to db schema">
-      <option name="closed" value="true" />
-      <created>1734805708740</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1734805708740</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Edit username validation">
-      <option name="closed" value="true" />
-      <created>1734850829738</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1734850829738</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Add data folder to gitignore">
-      <option name="closed" value="true" />
-      <created>1734851328113</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1734851328113</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Add upload page base logic">
-      <option name="closed" value="true" />
-      <created>1734872134980</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1734872134980</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Add video list view and delete management">
-      <option name="closed" value="true" />
-      <created>1734977246446</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1734977246446</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Add logout to navbar and new login page">
-      <option name="closed" value="true" />
-      <created>1734989005422</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1734989005422</updated>
+      <workItem from="1738005600067" duration="4072000" />
+      <workItem from="1738235308821" duration="4030000" />
+      <workItem from="1738593096019" duration="9000" />
+      <workItem from="1740065441858" duration="625000" />
+      <workItem from="1740150443047" duration="56478000" />
+      <workItem from="1740410487024" duration="51429000" />
+      <workItem from="1740684087962" duration="23471000" />
+      <workItem from="1740902052428" duration="37000" />
+      <workItem from="1740902100998" duration="1423000" />
     </task>
     <task id="LOCAL-00008" summary="Add transcoding script">
       <option name="closed" value="true" />
@@ -364,34 +331,313 @@
       <option name="project" value="LOCAL" />
       <updated>1736836914670</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Add responsiveness to video page and header">
+      <option name="closed" value="true" />
+      <created>1736848137580</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1736848137580</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Add views and likes number formatting">
+      <option name="closed" value="true" />
+      <created>1736850486514</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1736850486514</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Add avatar component">
+      <option name="closed" value="true" />
+      <created>1736853830588</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1736853830588</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Upgrade avatar component">
+      <option name="closed" value="true" />
+      <created>1737045544502</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1737045544502</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Remove console log">
+      <option name="closed" value="true" />
+      <created>1737045561627</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1737045561627</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Fix comment action">
+      <option name="closed" value="true" />
+      <created>1737045595407</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1737045595407</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Add comment sorting feature">
+      <option name="closed" value="true" />
+      <created>1737045651755</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1737045651756</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Rework video card ui">
+      <option name="closed" value="true" />
+      <created>1737266282502</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1737266282502</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Add popularity sort">
+      <option name="closed" value="true" />
+      <created>1737266379225</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1737266379225</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Fix resize desc height">
+      <option name="closed" value="true" />
+      <created>1737375910138</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1737375910138</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Add edit comment feature">
+      <option name="closed" value="true" />
+      <created>1737375945830</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1737375945830</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Add like comment feature">
+      <option name="closed" value="true" />
+      <created>1737391169775</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1737391169775</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Add response feature">
+      <option name="closed" value="true" />
+      <created>1737400706106</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1737400706106</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Add thumbnail placeholder">
+      <option name="closed" value="true" />
+      <created>1740333628211</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1740333628211</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Fix custom thumbnail in VideoCard component">
+      <option name="closed" value="true" />
+      <created>1740333684481</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1740333684481</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Add watch time tracking">
+      <option name="closed" value="true" />
+      <created>1740333724308</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1740333724308</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Add watch time tracking">
+      <option name="closed" value="true" />
+      <created>1740333772102</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1740333772102</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Add lucide svelte">
+      <option name="closed" value="true" />
+      <created>1740333785359</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1740333785359</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Add view count and watch time tracking in the player">
+      <option name="closed" value="true" />
+      <created>1740334194317</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334194317</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Add thumbnail after transcoding task end">
+      <option name="closed" value="true" />
+      <created>1740334456292</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334456292</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Add comment button contrast">
+      <option name="closed" value="true" />
+      <created>1740334482644</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334482644</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Add support for more video format">
+      <option name="closed" value="true" />
+      <created>1740334692053</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334692053</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Add duration format tool">
+      <option name="closed" value="true" />
+      <created>1740334721092</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334721092</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Fix layout">
+      <option name="closed" value="true" />
+      <created>1740334742919</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334742919</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Add edit feature">
+      <option name="closed" value="true" />
+      <created>1740334846354</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334846354</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Add download and edit button">
+      <option name="closed" value="true" />
+      <created>1740334926328</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1740334926328</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Fix videos layout">
+      <option name="closed" value="true" />
+      <created>1740408315759</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1740408315761</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Add view count and comment count">
+      <option name="closed" value="true" />
+      <created>1740411553410</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1740411553410</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Add shared videos to the main page">
+      <option name="closed" value="true" />
+      <created>1740423213180</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1740423213180</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Add edit button">
+      <option name="closed" value="true" />
+      <created>1740423851118</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1740423851119</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Fix Avatar component size">
+      <option name="closed" value="true" />
+      <created>1740675513643</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1740675513643</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Fix logout button">
+      <option name="closed" value="true" />
+      <created>1740675532450</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1740675532450</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Add user info update">
+      <option name="closed" value="true" />
+      <created>1740675617449</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1740675617449</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add files to gitignore" />
-    <MESSAGE value="Add video and video format to db schema" />
-    <MESSAGE value="Edit username validation" />
-    <MESSAGE value="Add data folder to gitignore" />
-    <MESSAGE value="Add upload page base logic" />
-    <MESSAGE value="Add video list view and delete management" />
-    <MESSAGE value="Add logout to navbar and new login page" />
-    <MESSAGE value="Add transcoding script" />
-    <MESSAGE value="Remove test scripts" />
-    <MESSAGE value="Add tailwind animate for easy animations of the player" />
-    <MESSAGE value="Optimize transcoding script for best quality, accurate compression, and easy auto bandwidth detection" />
-    <MESSAGE value="Add tailwind animate in tailwind conf" />
-    <MESSAGE value="Update nginx and docker conf to enable images storage" />
-    <MESSAGE value="Remove demo lucia auth pages" />
-    <MESSAGE value="Add logo" />
-    <MESSAGE value="Add logo to page header" />
-    <MESSAGE value="Add register page" />
-    <MESSAGE value="Remove old demo lucia reference" />
-    <MESSAGE value="Add visibility option in video uploading form" />
-    <MESSAGE value="Update custom vidstack player style and functionalities" />
-    <MESSAGE value="Add comments, description and like functionalities to video watching page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add comments, description and like functionalities to video watching page" />
+    <MESSAGE value="Rework video card ui" />
+    <MESSAGE value="Add popularity sort" />
+    <MESSAGE value="Fix resize desc height" />
+    <MESSAGE value="Add edit comment feature" />
+    <MESSAGE value="Add like comment feature" />
+    <MESSAGE value="Add response feature" />
+    <MESSAGE value="Add thumbnail placeholder" />
+    <MESSAGE value="Fix custom thumbnail in VideoCard component" />
+    <MESSAGE value="Add watch time tracking" />
+    <MESSAGE value="Add lucide svelte" />
+    <MESSAGE value="Add view count and watch time tracking in the player" />
+    <MESSAGE value="Add thumbnail after transcoding task end" />
+    <MESSAGE value="Add comment button contrast" />
+    <MESSAGE value="Add support for more video format" />
+    <MESSAGE value="Add duration format tool" />
+    <MESSAGE value="Fix layout" />
+    <MESSAGE value="Add edit feature" />
+    <MESSAGE value="Add download and edit button" />
+    <MESSAGE value="Fix videos layout" />
+    <MESSAGE value="Add view count and comment count" />
+    <MESSAGE value="Add shared videos to the main page" />
+    <MESSAGE value="Add edit button" />
+    <MESSAGE value="Fix Avatar component size" />
+    <MESSAGE value="Fix logout button" />
+    <MESSAGE value="Add user info update" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add user info update" />
   </component>
 </project>
