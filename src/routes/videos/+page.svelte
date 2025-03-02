@@ -206,7 +206,7 @@
 		}
 	}
 </script>
-<div class="px-16 py-4 overflow-auto">
+<div class="px-4 lg:px-16 py-4 overflow-auto">
 	<h1 class="text-2xl mb-6">Mes vidéos <span class="text-stone-400"><strong>·</strong> {data.videos.length}</span></h1>
 
 	{#if (videoProgressStatus)}
