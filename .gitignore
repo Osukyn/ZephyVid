@@ -26,5 +26,3 @@ vite.config.ts.timestamp-*
 *.db
 /data
 /.idea
-.idea
-.idea/workspace.xml
